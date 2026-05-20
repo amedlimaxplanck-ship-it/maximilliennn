@@ -1,0 +1,175 @@
+'use client';
+import { useState } from 'react';
+import styles from './Contact.module.css';
+
+const PROJECT_TYPES = [
+  'CRM Panel', 'SaaS Dashboard', 'API Geliştirme',
+  'Web Uygulaması', 'MVP', 'Diğer',
+];
+
+export default function Contact() {
+  const [form, setForm] = useState({
+    name: '', email: '', type: '', message: '',
+  });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) return;
+    setStatus('sending');
+    // Simulated send — wire up to your backend/email service
+    await new Promise((r) => setTimeout(r, 1200));
+    setStatus('sent');
+  };
+
+  return (
+    <section className={`section ${styles.contact}`} id="contact">
+      <div className="container">
+        <div className={styles.inner}>
+          {/* Left */}
+          <div className={styles.left}>
+            <div className={styles.sectionTag}>İletişim</div>
+            <h2 className={styles.title}>
+              Projenizi hayata<br />
+              <span className="gradient-text">geçirelim</span>
+            </h2>
+            <p className={styles.desc}>
+              Yeni bir proje mi başlatmak istiyorsunuz? Mevcut sisteminizi geliştirmek mi
+              istiyorsunuz? Her türlü sorunuz için buradayım.
+            </p>
+
+            <div className={styles.infoCards}>
+              <div className={styles.infoCard}>
+                <span className={styles.infoIcon}>⚡</span>
+                <div>
+                  <span className={styles.infoLabel}>Yanıt Süresi</span>
+                  <span className={styles.infoValue}>24 saat içinde</span>
+                </div>
+              </div>
+              <div className={styles.infoCard}>
+                <span className={styles.infoIcon}>🌍</span>
+                <div>
+                  <span className={styles.infoLabel}>Çalışma Bölgesi</span>
+                  <span className={styles.infoValue}>Türkiye & Global</span>
+                </div>
+              </div>
+              <div className={styles.infoCard}>
+                <span className={styles.infoIcon}>💬</span>
+                <div>
+                  <span className={styles.infoLabel}>Dil</span>
+                  <span className={styles.infoValue}>Türkçe & English</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right — Form */}
+          <div className={styles.right}>
+            <div className={styles.formCard}>
+              <div className={styles.formGlow} />
+              {status === 'sent' ? (
+                <div className={styles.successState}>
+                  <div className={styles.successIcon}>✅</div>
+                  <h3 className={styles.successTitle}>Mesajınız iletildi!</h3>
+                  <p className={styles.successDesc}>
+                    En kısa sürede size geri döneceğim. Teşekkürler!
+                  </p>
+                  <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name:'', email:'', type:'', message:'' }); }}>
+                    Yeni Mesaj
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className={styles.form} noValidate>
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="contact-name">Adınız</label>
+                      <input
+                        id="contact-name"
+                        name="name"
+                        type="text"
+                        className={styles.input}
+                        placeholder="Adınız Soyadınız"
+                        value={form.name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="contact-email">E-posta</label>
+                      <input
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        className={styles.input}
+                        placeholder="ornek@mail.com"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label} htmlFor="contact-type">Proje Türü</label>
+                    <select
+                      id="contact-type"
+                      name="type"
+                      className={styles.input}
+                      value={form.type}
+                      onChange={handleChange}
+                    >
+                      <option value="">Seçiniz</option>
+                      {PROJECT_TYPES.map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label} htmlFor="contact-message">Mesajınız</label>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      className={`${styles.input} ${styles.textarea}`}
+                      placeholder="Projeniz hakkında kısaca bilgi verin..."
+                      value={form.message}
+                      onChange={handleChange}
+                      rows={5}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`btn btn-primary ${styles.submitBtn}`}
+                    disabled={status === 'sending'}
+                    id="contact-submit"
+                  >
+                    {status === 'sending' ? (
+                      <>
+                        <span className={styles.spinner} />
+                        Gönderiliyor...
+                      </>
+                    ) : (
+                      <>
+                        Mesaj Gönder
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="22" y1="2" x2="11" y2="13"/>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

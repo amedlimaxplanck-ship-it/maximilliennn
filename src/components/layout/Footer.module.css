@@ -1,0 +1,165 @@
+.footer {
+  position: relative;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 1px;
+  background: var(--gradient);
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+/* ── BRAND ── */
+.brand {}
+
+.logo {
+  margin-bottom: 16px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
+.logoLink:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+.logoLink:hover .instaIcon {
+  color: #e1306c;
+}
+
+.logoMark {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.instaIcon {
+  color: var(--text-muted);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.tagline {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+/* ── LINKS ── */
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linksTitle {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.link {
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: var(--transition);
+}
+.link:hover {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.linkMuted {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ── BOTTOM ── */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 28px;
+  border-top: 1px solid rgba(108, 99, 255, 0.08);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.copy {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+  }
+
+  .tagline {
+    max-width: 100%;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inner {
+    grid-template-columns: 1fr;
+  }
+}

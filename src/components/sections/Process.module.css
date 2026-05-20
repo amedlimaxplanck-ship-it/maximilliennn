@@ -1,0 +1,185 @@
+.process {
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.sectionTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.sectionTag::before, .sectionTag::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--gradient);
+  border-radius: 1px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--text-muted);
+}
+
+/* ── STEPS ── */
+.steps {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  position: relative;
+}
+
+.stepLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.numWrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.08));
+  border: 1px solid rgba(108,99,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.num {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.connector {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(108,99,255,0.3), rgba(108,99,255,0.05));
+  margin: 8px 0;
+  min-height: 32px;
+}
+
+.stepRight {
+  padding-bottom: 36px;
+}
+
+.stepCard {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 24px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stepCard:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateX(6px);
+}
+
+.stepGlow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gradient);
+  border-radius: 1px;
+  opacity: 0;
+  transition: var(--transition);
+}
+.stepCard:hover .stepGlow { opacity: 1; }
+
+.stepIcon {
+  font-size: 28px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.stepDesc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .step {
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+  }
+
+  .numWrap {
+    width: 44px;
+    height: 44px;
+  }
+
+  .stepCard {
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .stepCard:hover {
+    transform: none;
+  }
+
+  .stepRight {
+    padding-bottom: 24px;
+  }
+}
