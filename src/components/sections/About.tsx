@@ -1,4 +1,5 @@
 import styles from './About.module.css';
+import { Rocket } from 'lucide-react';
 
 const techs = [
   'Next.js', 'React', 'TypeScript', 'Node.js',
@@ -18,7 +19,7 @@ export default function About() {
             </div>
             <div className={styles.imageGlow} />
             <div className={styles.floatBadge}>
-              <span>🚀</span>
+              <Rocket size={16} />
               <span>Full Stack</span>
             </div>
           </div>

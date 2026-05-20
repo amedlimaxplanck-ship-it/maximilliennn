@@ -1,33 +1,34 @@
 import styles from './Services.module.css';
+import { Monitor, BarChart, Plug, Palette, Settings, Rocket } from 'lucide-react';
 
 const services = [
   {
-    icon: '🖥️',
+    icon: <Monitor size={24} />,
     title: 'CRM Panel Geliştirme',
     desc: 'Müşteri ilişkilerini ve satış süreçlerini yönetmek için özel CRM sistemleri. Tam entegre, ölçeklenebilir.',
   },
   {
-    icon: '📊',
+    icon: <BarChart size={24} />,
     title: 'SaaS Dashboard',
     desc: 'Verilerinizi anlık takip edebileceğiniz, kullanıcı dostu SaaS panel ve dashboard çözümleri.',
   },
   {
-    icon: '🔌',
+    icon: <Plug size={24} />,
     title: 'API & Backend',
     desc: 'RESTful ve GraphQL API geliştirme, üçüncü parti entegrasyonlar ve güçlü backend mimarileri.',
   },
   {
-    icon: '🎨',
+    icon: <Palette size={24} />,
     title: 'UI/UX Tasarım',
     desc: 'Kullanıcı odaklı, modern arayüz tasarımları. Figma prototipler ve pixel-perfect kodlama.',
   },
   {
-    icon: '⚙️',
+    icon: <Settings size={24} />,
     title: 'Kurumsal Yazılım',
     desc: 'İş süreçlerinize özel ERP, stok yönetimi, raporlama ve otomasyon sistemleri.',
   },
   {
-    icon: '🚀',
+    icon: <Rocket size={24} />,
     title: 'MVP Geliştirme',
     desc: 'Fikrinizi hızla pazara çıkarın. Hızlı prototipleme ve minimum viable product geliştirme.',
   },

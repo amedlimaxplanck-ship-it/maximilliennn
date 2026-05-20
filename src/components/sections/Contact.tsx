@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import styles from './Contact.module.css';
+import { Zap, Globe, MessageCircle, CheckCircle } from 'lucide-react';
 
 const PROJECT_TYPES = [
   'CRM Panel', 'SaaS Dashboard', 'API Geliştirme',
@@ -44,21 +45,21 @@ export default function Contact() {
 
             <div className={styles.infoCards}>
               <div className={styles.infoCard}>
-                <span className={styles.infoIcon}>⚡</span>
+                <span className={styles.infoIcon}><Zap size={22} /></span>
                 <div>
                   <span className={styles.infoLabel}>Yanıt Süresi</span>
                   <span className={styles.infoValue}>24 saat içinde</span>
                 </div>
               </div>
               <div className={styles.infoCard}>
-                <span className={styles.infoIcon}>🌍</span>
+                <span className={styles.infoIcon}><Globe size={22} /></span>
                 <div>
                   <span className={styles.infoLabel}>Çalışma Bölgesi</span>
                   <span className={styles.infoValue}>Türkiye & Global</span>
                 </div>
               </div>
               <div className={styles.infoCard}>
-                <span className={styles.infoIcon}>💬</span>
+                <span className={styles.infoIcon}><MessageCircle size={22} /></span>
                 <div>
                   <span className={styles.infoLabel}>Dil</span>
                   <span className={styles.infoValue}>Türkçe & English</span>
@@ -73,7 +74,7 @@ export default function Contact() {
               <div className={styles.formGlow} />
               {status === 'sent' ? (
                 <div className={styles.successState}>
-                  <div className={styles.successIcon}>✅</div>
+                  <div className={styles.successIcon}><CheckCircle size={56} className="text-green-500" /></div>
                   <h3 className={styles.successTitle}>Mesajınız iletildi!</h3>
                   <p className={styles.successDesc}>
                     En kısa sürede size geri döneceğim. Teşekkürler!

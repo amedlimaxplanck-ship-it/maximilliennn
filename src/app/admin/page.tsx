@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getProjects, saveProject, deleteProject, updateProject, type Project } from '@/lib/portfolioStore';
 import styles from './admin.module.css';
+import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 
 const PASSWORD = 'synthetix2024';
 const CATEGORIES = ['CRM', 'SaaS', 'Web App', 'Diğer'];
@@ -171,8 +172,8 @@ export default function AdminPage() {
       <div className={styles.adminBody}>
         {/* ── FORM ── */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            {editingId ? '✏️ Projeyi Düzenle' : '➕ Yeni Proje Ekle'}
+          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {editingId ? <><Pencil size={20} /> Projeyi Düzenle</> : <><Plus size={20} /> Yeni Proje Ekle</>}
           </h2>
 
           <form onSubmit={handleSubmit} className={styles.form}>
@@ -279,8 +280,8 @@ export default function AdminPage() {
 
         {/* ── PROJECTS LIST ── */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            📁 Mevcut Projeler ({projects.length})
+          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FolderOpen size={20} /> Mevcut Projeler ({projects.length})
           </h2>
 
           {projects.length === 0 ? (
@@ -292,7 +293,7 @@ export default function AdminPage() {
                   <div className={styles.projectThumb}>
                     {p.images[0]
                       ? <img src={p.images[0]} alt={p.title} />
-                      : <span>🖼️</span>
+                      : <ImageIcon size={20} className="text-gray-500" />
                     }
                     {p.images.length > 1 && (
                       <span className={styles.imgCount}>+{p.images.length - 1}</span>
@@ -305,8 +306,8 @@ export default function AdminPage() {
                       <span className={styles.projectDesc}>{p.description.slice(0, 80)}{p.description.length > 80 ? '...' : ''}</span>
                     )}
                     {p.link && (
-                      <a href={p.link} target="_blank" rel="noopener noreferrer" className={styles.projectLink}>
-                        🔗 {p.link.replace(/^https?:\/\//, '').slice(0, 40)}
+                      <a href={p.link} target="_blank" rel="noopener noreferrer" className={styles.projectLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <LinkIcon size={12} /> {p.link.replace(/^https?:\/\//, '').slice(0, 40)}
                       </a>
                     )}
                   </div>

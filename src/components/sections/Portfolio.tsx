@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getProjects, type Project } from '@/lib/portfolioStore';
 import styles from './Portfolio.module.css';
+import { FolderOpen, Image as ImageIcon } from 'lucide-react';
 
 const FILTERS = ['Hepsi', 'CRM', 'SaaS', 'Web App', 'Diğer'];
 
@@ -64,7 +65,7 @@ export default function Portfolio() {
         {/* Grid */}
         {filtered.length === 0 ? (
           <div className={styles.empty}>
-            <div className={styles.emptyIcon}>📁</div>
+            <div className={styles.emptyIcon}><FolderOpen size={48} /></div>
             <p className={styles.emptyText}>Henüz proje eklenmemiş.</p>
             <p className={styles.emptyHint}>Admin panelinden proje ekleyebilirsin.</p>
           </div>
@@ -151,7 +152,7 @@ function ProjectCard({ project, onImageClick }: { project: Project; onImageClick
           </>
         ) : (
           <div className={styles.imagePlaceholder}>
-            <span>🖼️</span>
+            <ImageIcon size={40} />
           </div>
         )}
 

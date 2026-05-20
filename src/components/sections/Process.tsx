@@ -1,27 +1,28 @@
 import styles from './Process.module.css';
+import { Search, PenTool, Zap, Rocket } from 'lucide-react';
 
 const steps = [
   {
     num: '01',
-    icon: '🔍',
+    icon: <Search size={24} />,
     title: 'Keşif & Analiz',
     desc: 'İhtiyaçlarınızı, hedeflerinizi ve mevcut süreçlerinizi derinlemesine analiz ediyorum. Projenin kapsamını netleştiriyoruz.',
   },
   {
     num: '02',
-    icon: '🎨',
+    icon: <PenTool size={24} />,
     title: 'Tasarım & Prototip',
     desc: 'Figma ile interaktif prototipler hazırlıyorum. Onayladıktan sonra geliştirme aşamasına geçiyoruz.',
   },
   {
     num: '03',
-    icon: '⚡',
+    icon: <Zap size={24} />,
     title: 'Geliştirme',
     desc: 'Temiz, ölçeklenebilir ve bakımı kolay kod yazıyorum. Düzenli güncellemeler ile sizi süreçten haberdar ediyorum.',
   },
   {
     num: '04',
-    icon: '🚀',
+    icon: <Rocket size={24} />,
     title: 'Teslim & Destek',
     desc: 'Projeyi canlıya alıyoruz. Teslim sonrası teknik destek ve gerektiğinde güncelleme hizmeti sunuyorum.',
   },
