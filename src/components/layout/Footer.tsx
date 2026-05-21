@@ -1,7 +1,6 @@
 import styles from './Footer.module.css';
 
 export default function Footer() {
-  const year = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
@@ -53,8 +52,7 @@ export default function Footer() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <span className={styles.copy}>© {year} Maximillien Synthetix. Tüm hakları saklıdır.</span>
-        <span className={styles.copy}>Yazılım ile inşa edildi ✦</span>
+        <span className={styles.copy}>© 2024 Maximillien Synthetix. Tüm hakları saklıdır.</span>
       </div>
     </footer>
   );

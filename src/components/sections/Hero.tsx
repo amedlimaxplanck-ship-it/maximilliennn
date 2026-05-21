@@ -63,10 +63,7 @@ export default function Hero() {
       <div className={styles.bgGrid} />
 
       <div className={`container ${styles.content}`}>
-        <div className={styles.badge}>
-          <span className={styles.badgeDot} />
-          Müsait — Yeni proje alabiliyorum
-        </div>
+
 
         <h1 className={styles.title}>
           Yazılım ile İş<br />

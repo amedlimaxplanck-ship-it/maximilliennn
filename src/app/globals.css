@@ -2,12 +2,12 @@
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────────── */
 :root {
-  --bg-primary: #08080f;
-  --bg-secondary: #0f0f1a;
-  --bg-card: #13131f;
-  --bg-card-hover: #1a1a2e;
-  --border: rgba(108, 99, 255, 0.15);
-  --border-hover: rgba(108, 99, 255, 0.4);
+  --bg-primary: #020204;
+  --bg-secondary: #07070a;
+  --bg-card: #0d0d12;
+  --bg-card-hover: #14141b;
+  --border: rgba(108, 99, 255, 0.08);
+  --border-hover: rgba(108, 99, 255, 0.2);
 
   --accent: #6c63ff;
   --accent-2: #00d4ff;
