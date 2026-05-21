@@ -15,8 +15,8 @@ export default function About() {
           <div className={styles.imageWrap}>
             <div className={styles.imagePlaceholder}>
               <div className={styles.typewriterWrapper}>
-                <span className={styles.typewriterLine}>maximillien</span>
-                <span className={styles.typewriterLine}>maci</span>
+                <span className={`${styles.typewriterLine} ${styles.blue}`}>maximillien</span>
+                <span className={`${styles.typewriterLine} ${styles.black}`}>synthetix</span>
               </div>
               <div className={styles.imageRing} />
             </div>
@@ -35,7 +35,7 @@ export default function About() {
             <span className="gradient-text">üreten geliştirici</span>
           </h2>
           <p className={styles.text}>
-            Merhaba! Ben Maximillien Maci. İş süreçlerini dijitalleştiren, ölçeklenebilir
+            Merhaba! Ben Maximillien Synthetix. İş süreçlerini dijitalleştiren, ölçeklenebilir
             SaaS ürünleri ve kurumsal yazılım çözümleri geliştiriyorum. Her projede
             teknik mükemmeliyeti ve kullanıcı deneyimini ön planda tutuyorum.
           </p>

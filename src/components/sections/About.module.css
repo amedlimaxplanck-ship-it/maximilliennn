@@ -46,11 +46,18 @@
   font-family: 'Courier New', Courier, monospace;
   font-size: 26px;
   font-weight: 800;
-  color: #060608; /* Deep obsidian black */
   letter-spacing: -1px;
   line-height: 1.1;
   text-transform: lowercase;
   white-space: nowrap;
+}
+
+.blue {
+  color: #0066cc; /* Beautiful aesthetic blue */
+}
+
+.black {
+  color: #060608; /* Deep obsidian black */
 }
 
 .imageRing {
