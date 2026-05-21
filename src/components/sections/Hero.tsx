@@ -60,55 +60,104 @@ export default function Hero() {
 
 
       <div className={`container ${styles.content}`}>
+        <div className={styles.heroLeft}>
+          <h1 className={styles.title}>
+            Yazılım ile İş<br />
+            Süreçlerini{' '}
+            <span className="gradient-text">Dönüştürüyorum</span>
+          </h1>
 
+          <div className={styles.typingRow}>
+            <span className={styles.typingLabel}>Ben bir</span>
+            <span className={styles.typingText}>{typed}</span>
+            <span className={styles.cursor} />
+          </div>
 
-        <h1 className={styles.title}>
-          Yazılım ile İş<br />
-          Süreçlerini{' '}
-          <span className="gradient-text">Dönüştürüyorum</span>
-        </h1>
+          <p className={styles.desc}>
+            CRM panelleri, SaaS dashboard'ları ve kurumsal yazılım çözümleri geliştiriyorum.
+            Fikrinizi ürüne dönüştürmek için buradayım.
+          </p>
 
-        <div className={styles.typingRow}>
-          <span className={styles.typingLabel}>Ben bir</span>
-          <span className={styles.typingText}>{typed}</span>
-          <span className={styles.cursor} />
+          <div className={styles.ctas}>
+            <button
+              className="btn btn-primary"
+              onClick={() => scrollTo('#portfolio')}
+              id="hero-cta-portfolio"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Projelerimi Gör
+            </button>
+            <button
+              className="btn btn-outline"
+              onClick={() => scrollTo('#contact')}
+              id="hero-cta-contact"
+            >
+              İletişime Geç
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+
+          <div className={styles.stats}>
+            {[
+              { n: '50+', label: 'Tamamlanan Proje' },
+              { n: '5+', label: 'Yıl Deneyim' },
+              { n: '30+', label: 'Mutlu Müşteri' },
+            ].map((s) => (
+              <div key={s.label} className={styles.stat}>
+                <span className={styles.statNum}>{s.n}</span>
+                <span className={styles.statLabel}>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <p className={styles.desc}>
-          CRM panelleri, SaaS dashboard'ları ve kurumsal yazılım çözümleri geliştiriyorum.
-          Fikrinizi ürüne dönüştürmek için buradayım.
-        </p>
-
-        <div className={styles.ctas}>
-          <button
-            className="btn btn-primary"
-            onClick={() => scrollTo('#portfolio')}
-            id="hero-cta-portfolio"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Projelerimi Gör
-          </button>
-          <button
-            className="btn btn-outline"
-            onClick={() => scrollTo('#contact')}
-            id="hero-cta-contact"
-          >
-            İletişime Geç
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </button>
-        </div>
-
-        <div className={styles.stats}>
-          {[
-            { n: '50+', label: 'Tamamlanan Proje' },
-            { n: '5+', label: 'Yıl Deneyim' },
-            { n: '30+', label: 'Mutlu Müşteri' },
-          ].map((s) => (
-            <div key={s.label} className={styles.stat}>
-              <span className={styles.statNum}>{s.n}</span>
-              <span className={styles.statLabel}>{s.label}</span>
+        <div className={styles.heroRight}>
+          <div className={styles.mockupContainer}>
+            {/* Laptop Mockup */}
+            <div className={styles.laptopMockup}>
+              <div className={styles.laptopScreen}>
+                <div className={styles.laptopHeader}>
+                  <div className={styles.mockupDots}>
+                    <span className={styles.mockupDot} style={{ background: '#ff5f56' }} />
+                    <span className={styles.mockupDot} style={{ background: '#ffbd2e' }} />
+                    <span className={styles.mockupDot} style={{ background: '#27c93f' }} />
+                  </div>
+                  <div className={styles.mockupBar}>maximillien.io/dashboard</div>
+                </div>
+                <div className={styles.laptopBody}>
+                  <video
+                    src="/hero-showcase.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className={styles.mockupVideo}
+                  />
+                </div>
+              </div>
+              <div className={styles.laptopBase} />
             </div>
-          ))}
+
+            {/* Phone Mockup */}
+            <div className={styles.phoneMockup}>
+              <div className={styles.phoneScreen}>
+                <div className={styles.phoneSpeaker} />
+                <div className={styles.phoneDynamicIsland} />
+                <div className={styles.phoneBody}>
+                  <video
+                    src="/hero-mobile-showcase.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className={styles.mockupVideo}
+                  />
+                </div>
+              </div>
+              <div className={styles.phoneVolumeBtn} />
+              <div className={styles.phonePowerBtn} />
+            </div>
+          </div>
         </div>
       </div>
 
