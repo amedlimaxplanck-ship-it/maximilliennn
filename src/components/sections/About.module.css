@@ -24,23 +24,33 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.140), rgba(255, 255, 255, 0.070));
-  border: 2px solid var(--border-hover);
+  background: #ffffff; /* Premium white background */
+  border: 3px solid #1a1a24;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
-.initials {
-  font-family: var(--font-display);
-  font-size: 64px;
-  font-weight: 700;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.typewriterWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.typewriterLine {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 26px;
+  font-weight: 800;
+  color: #060608; /* Deep obsidian black */
+  letter-spacing: -1px;
+  line-height: 1.1;
+  text-transform: lowercase;
+  white-space: nowrap;
 }
 
 .imageRing {
@@ -174,8 +184,8 @@
     height: 220px;
   }
 
-  .initials {
-    font-size: 48px;
+  .typewriterLine {
+    font-size: 20px;
   }
 
   .floatBadge {

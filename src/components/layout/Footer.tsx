@@ -52,7 +52,7 @@ export default function Footer() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <span className={styles.copy}>© 2024 Maximillien Synthetix. Tüm hakları saklıdır.</span>
+        <span className={styles.copy}>© 2024 Maximillien Maci. Tüm hakları saklıdır.</span>
       </div>
     </footer>
   );
