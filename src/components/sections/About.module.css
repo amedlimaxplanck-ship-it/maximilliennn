@@ -24,7 +24,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(0,212,255,0.1));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.140), rgba(255, 255, 255, 0.070));
   border: 2px solid var(--border-hover);
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@
   position: absolute;
   inset: -12px;
   border-radius: 50%;
-  border: 1px dashed rgba(108, 99, 255, 0.3);
+  border: 1px dashed rgba(255, 255, 255, 0.210);
   animation: spin-slow 20s linear infinite;
 }
 
@@ -55,7 +55,7 @@
   position: absolute;
   inset: -40px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(108, 99, 255, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.105) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -134,8 +134,8 @@
 .techBadge {
   padding: 6px 14px;
   border-radius: 100px;
-  background: rgba(108, 99, 255, 0.08);
-  border: 1px solid rgba(108, 99, 255, 0.2);
+  background: rgba(255, 255, 255, 0.056);
+  border: 1px solid rgba(255, 255, 255, 0.140);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -143,7 +143,7 @@
 }
 
 .techBadge:hover {
-  background: rgba(108, 99, 255, 0.18);
+  background: rgba(255, 255, 255, 0.126);
   border-color: var(--accent);
   color: var(--text-primary);
   transform: translateY(-2px);

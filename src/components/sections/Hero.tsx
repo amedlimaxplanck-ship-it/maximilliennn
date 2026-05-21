@@ -57,10 +57,7 @@ export default function Hero() {
 
   return (
     <section className={styles.hero} id="hero">
-      {/* Animated background */}
-      <div className={styles.bgOrb1} />
-      <div className={styles.bgOrb2} />
-      <div className={styles.bgGrid} />
+
 
       <div className={`container ${styles.content}`}>
 

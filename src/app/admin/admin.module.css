@@ -18,7 +18,7 @@
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.105) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -200,7 +200,7 @@
 .input::placeholder { color: var(--text-muted); }
 .input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.105);
 }
 
 select.input {
@@ -222,8 +222,8 @@ select.input option { background: var(--bg-secondary); }
 .imageNote {
   font-size: 13px;
   color: var(--text-muted);
-  background: rgba(108,99,255,0.07);
-  border: 1px solid rgba(108,99,255,0.18);
+  background: rgba(255, 255, 255, 0.049);
+  border: 1px solid rgba(255, 255, 255, 0.126);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   line-height: 1.6;
@@ -273,7 +273,7 @@ select.input option { background: var(--bg-secondary); }
   left: 4px;
   font-size: 10px;
   font-weight: 700;
-  background: rgba(108,99,255,0.8);
+  background: rgba(255, 255, 255, 0.560);
   color: #fff;
   padding: 1px 6px;
   border-radius: 4px;
@@ -284,7 +284,7 @@ select.input option { background: var(--bg-secondary); }
   height: 80px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--border-hover);
-  background: rgba(108,99,255,0.04);
+  background: rgba(255, 255, 255, 0.028);
   color: var(--text-muted);
   display: flex;
   flex-direction: column;
@@ -299,7 +299,7 @@ select.input option { background: var(--bg-secondary); }
 .addImageBtn:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(108,99,255,0.08);
+  background: rgba(255, 255, 255, 0.056);
 }
 .addImageIcon {
   font-size: 24px;
@@ -367,7 +367,7 @@ select.input option { background: var(--bg-secondary); }
   right: 2px;
   font-size: 9px;
   font-weight: 700;
-  background: rgba(108,99,255,0.85);
+  background: rgba(255, 255, 255, 0.595);
   color: #fff;
   padding: 1px 4px;
   border-radius: 3px;
@@ -423,11 +423,11 @@ select.input option { background: var(--bg-secondary); }
   font-size: 13px;
   font-weight: 600;
   color: var(--accent);
-  border: 1px solid rgba(108,99,255,0.3);
-  background: rgba(108,99,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.210);
+  background: rgba(255, 255, 255, 0.056);
   transition: var(--transition);
 }
-.editBtn:hover { background: rgba(108,99,255,0.18); }
+.editBtn:hover { background: rgba(255, 255, 255, 0.126); }
 
 .deleteBtn {
   padding: 7px 14px;
@@ -479,7 +479,7 @@ select.input option { background: var(--bg-secondary); }
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(108,99,255,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(255, 255, 255, 0.140);
   z-index: 9999;
   white-space: nowrap;
   animation: slide-up 0.3s ease;

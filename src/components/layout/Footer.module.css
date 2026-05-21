@@ -124,7 +124,7 @@
   justify-content: space-between;
   padding-top: 20px;
   padding-bottom: 28px;
-  border-top: 1px solid rgba(108, 99, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.056);
   gap: 16px;
   flex-wrap: wrap;
 }

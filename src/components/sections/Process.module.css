@@ -67,8 +67,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.08));
-  border: 1px solid rgba(108,99,255,0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.056));
+  border: 1px solid rgba(255, 255, 255, 0.210);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,7 +90,7 @@
 .connector {
   flex: 1;
   width: 1px;
-  background: linear-gradient(to bottom, rgba(108,99,255,0.3), rgba(108,99,255,0.05));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.210), rgba(255, 255, 255, 0.035));
   margin: 8px 0;
   min-height: 32px;
 }

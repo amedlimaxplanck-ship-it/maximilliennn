@@ -77,7 +77,7 @@
   border-color: var(--border-hover);
   background: var(--bg-card-hover);
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(108,99,255,0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.105);
 }
 
 .card:hover .cardGlow {
@@ -105,8 +105,8 @@
   width: 52px;
   height: 52px;
   border-radius: var(--radius-md);
-  background: rgba(108, 99, 255, 0.1);
-  border: 1px solid rgba(108, 99, 255, 0.15);
+  background: rgba(255, 255, 255, 0.070);
+  border: 1px solid rgba(255, 255, 255, 0.105);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,8 +115,8 @@
 }
 
 .card:hover .iconWrap {
-  background: rgba(108, 99, 255, 0.2);
-  border-color: rgba(108, 99, 255, 0.35);
+  background: rgba(255, 255, 255, 0.140);
+  border-color: rgba(255, 255, 255, 0.245);
 }
 
 .icon {
