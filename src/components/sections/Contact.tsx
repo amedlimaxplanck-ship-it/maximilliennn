@@ -40,7 +40,7 @@ export default function Contact() {
             </h2>
             <p className={styles.desc}>
               Yeni bir proje mi başlatmak istiyorsunuz? Mevcut sisteminizi geliştirmek mi
-              istiyorsunuz? Her türlü sorunuz için buradayım.
+              istiyorsunuz? Her türlü soru ve proje teklifleri için iletişime geçilebilir.
             </p>
 
             <div className={styles.infoCards}>
@@ -77,7 +77,7 @@ export default function Contact() {
                   <div className={styles.successIcon}><CheckCircle size={56} className="text-green-500" /></div>
                   <h3 className={styles.successTitle}>Mesajınız iletildi!</h3>
                   <p className={styles.successDesc}>
-                    En kısa sürede size geri döneceğim. Teşekkürler!
+                    En kısa sürede geri dönüş sağlanacaktır. Teşekkür ederiz!
                   </p>
                   <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name:'', email:'', type:'', message:'' }); }}>
                     Yeni Mesaj

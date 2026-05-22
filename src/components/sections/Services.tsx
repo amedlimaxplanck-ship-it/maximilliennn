@@ -41,10 +41,10 @@ export default function Services() {
         <div className={styles.header}>
           <div className={styles.sectionTag}>Hizmetler</div>
           <h2 className={styles.title}>
-            Ne Yapıyorum?
+            Hizmet Alanları
           </h2>
           <p className={styles.subtitle}>
-            Yazılım projelerinizin her aşamasında yanınızda oluyorum —
+            Yazılım projelerinin her aşamasında profesyonel destek sunulmaktadır —
             fikirden ürüne kadar.
           </p>
         </div>

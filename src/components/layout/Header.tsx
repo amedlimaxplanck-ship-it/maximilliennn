@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 
 const navItems = [
-  { label: 'Hakkımda', href: '#about' },
+  { label: 'Hakkında', href: '#about' },
   { label: 'Hizmetler', href: '#services' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Süreç', href: '#process' },
@@ -30,11 +30,11 @@ export default function Header() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.logo}>
-          <span className={styles.logoMark}>S</span>
-          <span className={styles.logoText}>
-            <span className="gradient-text">Synthetix</span>
-          </span>
+        <Link href="/" className={`brand-badge ${styles.logo}`}>
+          <div className="brand-badge-inner">
+            <span className="brand-line black">maximillien</span>
+            <span className="brand-line blue">synthetix</span>
+          </div>
         </Link>
 
         <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`}>

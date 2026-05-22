@@ -6,25 +6,25 @@ const steps = [
     num: '01',
     icon: <Search size={24} />,
     title: 'Keşif & Analiz',
-    desc: 'İhtiyaçlarınızı, hedeflerinizi ve mevcut süreçlerinizi derinlemesine analiz ediyorum. Projenin kapsamını netleştiriyoruz.',
+    desc: 'İhtiyaçlar, hedefler ve mevcut iş süreçleri derinlemesine analiz edilerek projenin kapsamı netleştirilir.',
   },
   {
     num: '02',
     icon: <PenTool size={24} />,
     title: 'Tasarım & Prototip',
-    desc: 'Figma ile interaktif prototipler hazırlıyorum. Onayladıktan sonra geliştirme aşamasına geçiyoruz.',
+    desc: 'Figma ile modern ve interaktif prototipler hazırlanır. Onay sonrasında geliştirme aşamasına geçiş sağlanır.',
   },
   {
     num: '03',
     icon: <Zap size={24} />,
     title: 'Geliştirme',
-    desc: 'Temiz, ölçeklenebilir ve bakımı kolay kod yazıyorum. Düzenli güncellemeler ile sizi süreçten haberdar ediyorum.',
+    desc: 'Temiz, ölçeklenebilir ve bakımı kolay kodlama standartları uygulanır. Düzenli güncellemeler ile süreç şeffaf olarak raporlanır.',
   },
   {
     num: '04',
     icon: <Rocket size={24} />,
     title: 'Teslim & Destek',
-    desc: 'Projeyi canlıya alıyoruz. Teslim sonrası teknik destek ve gerektiğinde güncelleme hizmeti sunuyorum.',
+    desc: 'Proje başarıyla canlıya alınır. Teslimat sonrası teknik destek ve ihtiyaçlar doğrultusunda güncelleme hizmetleri sunulmaktadır.',
   },
 ];
 
@@ -34,7 +34,7 @@ export default function Process() {
       <div className="container">
         <div className={styles.header}>
           <div className={styles.sectionTag}>Çalışma Süreci</div>
-          <h2 className={styles.title}>Nasıl Çalışıyorum?</h2>
+          <h2 className={styles.title}>İşleyiş Süreci</h2>
           <p className={styles.subtitle}>
             Şeffaf, organize ve sonuç odaklı bir süreç.
           </p>

@@ -39,9 +39,9 @@ export default function Portfolio() {
       <div className="container">
         <div className={styles.header}>
           <div className={styles.sectionTag}>Portfolio</div>
-          <h2 className={styles.title}>Projelerim</h2>
+          <h2 className={styles.title}>Projeler</h2>
           <p className={styles.subtitle}>
-            Geliştirdiğim yazılımlardan seçmeler. Her biri gerçek bir ihtiyaçtan doğdu.
+            Geliştirilen yazılım çözümlerinden seçmeler. Her biri gerçek bir ihtiyaca yönelik tasarlandı.
           </p>
         </div>
 

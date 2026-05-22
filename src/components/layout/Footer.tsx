@@ -12,11 +12,13 @@ export default function Footer() {
               href="https://www.instagram.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.logoLink}
+              className={`brand-badge ${styles.logoLink}`}
               aria-label="Instagram"
             >
-              <span className={styles.logoMark}>S</span>
-              <span className={styles.logoText}>Synthetix</span>
+              <div className="brand-badge-inner">
+                <span className="brand-line black">maximillien</span>
+                <span className="brand-line blue">synthetix</span>
+              </div>
               <span className={styles.instaIcon}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -27,14 +29,14 @@ export default function Footer() {
             </a>
           </div>
           <p className={styles.tagline}>
-            Yazılım ile iş süreçlerini dönüştürüyorum.
+            Yazılım ile iş süreçlerini dönüştürün.
           </p>
         </div>
 
         <div className={styles.links}>
           <span className={styles.linksTitle}>Hızlı Erişim</span>
           {[
-            ['Hakkımda', '#about'],
+            ['Hakkında', '#about'],
             ['Hizmetler', '#services'],
             ['Portfolio', '#portfolio'],
             ['İletişim', '#contact'],

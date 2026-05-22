@@ -46,30 +46,7 @@
   color: #e1306c;
 }
 
-.logoMark {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: var(--gradient);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 17px;
-  color: #fff;
-  flex-shrink: 0;
-}
 
-.logoText {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 20px;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 .instaIcon {
   color: var(--text-muted);

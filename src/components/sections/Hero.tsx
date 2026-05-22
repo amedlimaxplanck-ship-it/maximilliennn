@@ -64,18 +64,17 @@ export default function Hero() {
           <h1 className={styles.title}>
             Yazılım ile İş<br />
             Süreçlerini{' '}
-            <span className="gradient-text">Dönüştürüyorum</span>
+            <span className="gradient-text">Dönüştürün</span>
           </h1>
 
           <div className={styles.typingRow}>
-            <span className={styles.typingLabel}>Ben bir</span>
             <span className={styles.typingText}>{typed}</span>
             <span className={styles.cursor} />
           </div>
 
           <p className={styles.desc}>
-            CRM panelleri, SaaS dashboard'ları ve kurumsal yazılım çözümleri geliştiriyorum.
-            Fikrinizi ürüne dönüştürmek için buradayım.
+            CRM panelleri, SaaS dashboard'ları ve kurumsal yazılım çözümleri.
+            Fikirleri ölçeklenebilir ve yüksek performanslı ürünlere dönüştürmek için profesyonel yazılım hizmetleri.
           </p>
 
           <div className={styles.ctas}>
@@ -85,7 +84,7 @@ export default function Hero() {
               id="hero-cta-portfolio"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              Projelerimi Gör
+              Projeleri İncele
             </button>
             <button
               className="btn btn-outline"
