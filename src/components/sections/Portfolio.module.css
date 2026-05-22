@@ -351,3 +351,25 @@
   .lightboxNext { right: -16px; }
   .lightboxNav { width: 36px; height: 36px; font-size: 20px; }
 }
+
+.moreContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: var(--transition);
+  margin-bottom: 32px;
+  font-weight: 500;
+  width: fit-content;
+}
+.backLink:hover {
+  color: var(--accent-2);
+  transform: translateX(-4px);
+}

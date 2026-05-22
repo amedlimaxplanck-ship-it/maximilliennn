@@ -6,7 +6,7 @@ import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from '
 import { auth } from '@/lib/firebase';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
-const CATEGORIES = ['CRM', 'SaaS', 'Web App', 'Diğer'];
+const CATEGORIES = ['Web Sitesi', 'CRM', 'SaaS', 'Web App', 'Diğer'];
 const MAX_IMAGES = 3;
 const MAX_FILE_MB = 10; // Sıkıştıracağımız için başlangıç limitini yüksek tutabiliriz
 

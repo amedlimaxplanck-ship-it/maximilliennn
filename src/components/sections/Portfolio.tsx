@@ -4,11 +4,8 @@ import { subscribeProjects, type Project } from '@/lib/portfolioStore';
 import styles from './Portfolio.module.css';
 import { FolderOpen, Image as ImageIcon } from 'lucide-react';
 
-const FILTERS = ['Hepsi', 'CRM', 'SaaS', 'Web App', 'Diğer'];
-
 export default function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filter, setFilter] = useState('Hepsi');
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
 
   useEffect(() => {
@@ -18,9 +15,7 @@ export default function Portfolio() {
     return () => unsubscribe();
   }, []);
 
-  const filtered = filter === 'Hepsi'
-    ? projects
-    : projects.filter((p) => p.category === filter);
+  const displayedProjects = projects.slice(0, 3);
 
   const openLightbox = (imgs: string[], idx: number) => setLightbox({ imgs, idx });
   const closeLightbox = () => setLightbox(null);
@@ -45,36 +40,32 @@ export default function Portfolio() {
           </p>
         </div>
 
-        {/* Filters */}
-        <div className={styles.filters}>
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              className={`${styles.filterBtn} ${filter === f ? styles.filterActive : ''}`}
-              onClick={() => setFilter(f)}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
         {/* Grid */}
-        {filtered.length === 0 ? (
+        {displayedProjects.length === 0 ? (
           <div className={styles.empty}>
             <div className={styles.emptyIcon}><FolderOpen size={48} /></div>
             <p className={styles.emptyText}>Henüz proje eklenmemiş.</p>
             <p className={styles.emptyHint}>Admin panelinden proje ekleyebilirsin.</p>
           </div>
         ) : (
-          <div className={styles.grid}>
-            {filtered.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onImageClick={(idx) => openLightbox(project.images, idx)}
-              />
-            ))}
-          </div>
+          <>
+            <div className={styles.grid}>
+              {displayedProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onImageClick={(idx) => openLightbox(project.images, idx)}
+                />
+              ))}
+            </div>
+            {projects.length > 3 && (
+              <div className={styles.moreContainer}>
+                <a href="/portfolio" className="btn btn-outline">
+                  Tüm Projeleri Gör →
+                </a>
+              </div>
+            )}
+          </>
         )}
       </div>
 

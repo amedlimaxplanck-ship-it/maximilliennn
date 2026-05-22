@@ -23,6 +23,10 @@ export default function Header() {
 
   const handleNav = (href: string) => {
     setMenuOpen(false);
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.location.href = `/${href}`;
+      return;
+    }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
