@@ -103,7 +103,8 @@
   display: flex;
   flex-direction: column;
 }
-.card:hover {
+.grid .card:hover,
+.carouselActiveCard .card:hover {
   border-color: var(--border-hover);
   box-shadow: 0 16px 48px rgba(0,0,0,0.4);
   transform: translateY(-4px);
@@ -124,7 +125,8 @@
   cursor: zoom-in;
   transition: transform 0.4s ease;
 }
-.card:hover .cardImg {
+.grid .card:hover .cardImg,
+.carouselActiveCard .card:hover .cardImg {
   transform: scale(1.03);
 }
 
@@ -189,7 +191,8 @@
   transition: var(--transition);
   z-index: 3;
 }
-.card:hover .expandBtn { opacity: 1; }
+.grid .card:hover .expandBtn,
+.carouselActiveCard .card:hover .expandBtn { opacity: 1; }
 
 .categoryBadge {
   position: absolute;
@@ -372,4 +375,115 @@
 .backLink:hover {
   color: var(--accent-2);
   transform: translateX(-4px);
+}
+
+/* ── 3D COVERFLOW CAROUSEL ── */
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  height: 520px;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  --carousel-left-transform: translate3d(-180px, 0, -150px) scale(0.85);
+  --carousel-right-transform: translate3d(180px, 0, -150px) scale(0.85);
+  margin-bottom: 40px;
+}
+
+.carouselCardWrapper {
+  position: absolute;
+  width: 100%;
+  max-width: 440px;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.25, 1), opacity 0.6s ease;
+  will-change: transform, opacity;
+  border-radius: var(--radius-lg);
+}
+
+.carouselNav {
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  right: -20px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  padding: 0;
+}
+
+.navArrow {
+  pointer-events: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.navArrow:hover {
+  background: var(--gradient);
+  border-color: transparent;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+  .carouselContainer {
+    max-width: 800px;
+    height: 500px;
+    --carousel-left-transform: translate3d(-140px, 0, -130px) scale(0.85);
+    --carousel-right-transform: translate3d(140px, 0, -130px) scale(0.85);
+  }
+  .carouselNav {
+    left: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carouselContainer {
+    height: 440px;
+    margin-bottom: 80px;
+    --carousel-left-transform: translate3d(-35px, 0, -120px) scale(0.85);
+    --carousel-right-transform: translate3d(35px, 0, -120px) scale(0.85);
+  }
+  
+  .carouselCardWrapper {
+    max-width: 85%;
+  }
+
+  .carouselNav {
+    position: absolute;
+    top: auto;
+    bottom: -60px;
+    transform: none;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 130px;
+    justify-content: space-between;
+    padding: 0;
+  }
+  
+  .navArrow {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
 }

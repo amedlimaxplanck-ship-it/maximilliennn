@@ -6,16 +6,80 @@ import { FolderOpen, Image as ImageIcon } from 'lucide-react';
 
 export default function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
 
   useEffect(() => {
     const unsubscribe = subscribeProjects((data) => {
       setProjects(data);
+      setActiveIndex(0);
     });
     return () => unsubscribe();
   }, []);
 
   const displayedProjects = projects.slice(0, 3);
+
+  const nextCard = () => {
+    setActiveIndex((prev) => (prev + 1) % displayedProjects.length);
+  };
+
+  const prevCard = () => {
+    setActiveIndex((prev) => (prev - 1 + displayedProjects.length) % displayedProjects.length);
+  };
+
+  const getCardStyle = (index: number) => {
+    const total = displayedProjects.length;
+    if (total === 1) {
+      return {
+        transform: 'none',
+        opacity: 1,
+        zIndex: 2,
+      };
+    }
+
+    let diff = index - activeIndex;
+
+    // Normalise loop diff
+    if (diff < -1) diff += total;
+    if (diff > 1) diff -= total;
+
+    if (diff === 0) {
+      return {
+        transform: 'translate3d(0, 0, 0) scale(1)',
+        opacity: 1,
+        zIndex: 3,
+        cursor: 'default',
+      };
+    } else if (diff === 1) {
+      return {
+        transform: 'var(--carousel-right-transform, translate3d(32%, 0, -100px) scale(0.85))',
+        opacity: 0.45,
+        zIndex: 1,
+        cursor: 'pointer',
+      };
+    } else if (diff === -1) {
+      return {
+        transform: 'var(--carousel-left-transform, translate3d(-32%, 0, -100px) scale(0.85))',
+        opacity: 0.45,
+        zIndex: 1,
+        cursor: 'pointer',
+      };
+    }
+
+    return {
+      transform: 'translate3d(0, 0, -200px) scale(0.7)',
+      opacity: 0,
+      zIndex: 0,
+    };
+  };
+
+  const handleCardClick = (e: React.MouseEvent, index: number) => {
+    if (index !== activeIndex) {
+      e.preventDefault();
+      e.stopPropagation();
+      setActiveIndex(index);
+    }
+  };
 
   const openLightbox = (imgs: string[], idx: number) => setLightbox({ imgs, idx });
   const closeLightbox = () => setLightbox(null);
@@ -40,7 +104,7 @@ export default function Portfolio() {
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Carousel / Card List */}
         {displayedProjects.length === 0 ? (
           <div className={styles.empty}>
             <div className={styles.emptyIcon}><FolderOpen size={48} /></div>
@@ -49,15 +113,29 @@ export default function Portfolio() {
           </div>
         ) : (
           <>
-            <div className={styles.grid}>
-              {displayedProjects.map((project) => (
-                <ProjectCard
+            <div className={styles.carouselContainer}>
+              {displayedProjects.map((project, idx) => (
+                <div
                   key={project.id}
-                  project={project}
-                  onImageClick={(idx) => openLightbox(project.images, idx)}
-                />
+                  className={`${styles.carouselCardWrapper} ${idx === activeIndex ? styles.carouselActiveCard : ''}`}
+                  style={getCardStyle(idx)}
+                  onClickCapture={(e) => handleCardClick(e, idx)}
+                >
+                  <ProjectCard
+                    project={project}
+                    onImageClick={(imgIdx) => openLightbox(project.images, imgIdx)}
+                  />
+                </div>
               ))}
+
+              {displayedProjects.length > 1 && (
+                <div className={styles.carouselNav}>
+                  <button className={styles.navArrow} onClick={prevCard}>‹</button>
+                  <button className={styles.navArrow} onClick={nextCard}>›</button>
+                </div>
+              )}
             </div>
+
             {projects.length > 3 && (
               <div className={styles.moreContainer}>
                 <a href="/portfolio" className="btn btn-outline">
