@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import styles from './Process.module.css';
 import { Search, PenTool, Zap, Rocket } from 'lucide-react';
 
@@ -29,6 +32,8 @@ const steps = [
 ];
 
 export default function Process() {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
     <section className={`section ${styles.process}`} id="process">
       <div className="container">
@@ -40,27 +45,57 @@ export default function Process() {
           </p>
         </div>
 
-        <div className={styles.steps}>
-          {steps.map((step, i) => (
-            <div key={step.num} className={styles.step}>
-              <div className={styles.stepLeft}>
-                <div className={styles.numWrap}>
-                  <span className={styles.num}>{step.num}</span>
+        {/* Desktop View */}
+        <div className={styles.desktopSteps}>
+          <div className={styles.steps}>
+            {steps.map((step, i) => (
+              <div key={step.num} className={styles.step}>
+                <div className={styles.stepLeft}>
+                  <div className={styles.numWrap}>
+                    <span className={styles.num}>{step.num}</span>
+                  </div>
+                  {i < steps.length - 1 && <div className={styles.connector} />}
                 </div>
-                {i < steps.length - 1 && <div className={styles.connector} />}
-              </div>
-              <div className={styles.stepRight}>
-                <div className={styles.stepCard}>
-                  <div className={styles.stepGlow} />
-                  <span className={styles.stepIcon}>{step.icon}</span>
-                  <div className={styles.stepContent}>
-                    <h3 className={styles.stepTitle}>{step.title}</h3>
-                    <p className={styles.stepDesc}>{step.desc}</p>
+                <div className={styles.stepRight}>
+                  <div className={styles.stepCard}>
+                    <div className={styles.stepGlow} />
+                    <span className={styles.stepIcon}>{step.icon}</span>
+                    <div className={styles.stepContent}>
+                      <h3 className={styles.stepTitle}>{step.title}</h3>
+                      <p className={styles.stepDesc}>{step.desc}</p>
+                    </div>
                   </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile View - Interactive Tabs */}
+        <div className={styles.mobileTabsContainer}>
+          <div className={styles.tabsHeader}>
+            {steps.map((step, i) => (
+              <button
+                key={step.num}
+                className={`${styles.tabBtn} ${activeStep === i ? styles.activeTab : ''}`}
+                onClick={() => setActiveStep(i)}
+                aria-label={`Adım ${step.num}`}
+              >
+                <span className={styles.tabNum}>{step.num}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className={styles.mobileCard} key={activeStep}>
+            <div className={styles.mobileCardGlow} />
+            <div className={styles.mobileCardHeader}>
+              <span className={styles.mobileCardIcon}>{steps[activeStep].icon}</span>
+              <h3 className={styles.mobileCardTitle}>
+                {steps[activeStep].title}
+              </h3>
             </div>
-          ))}
+            <p className={styles.mobileCardDesc}>{steps[activeStep].desc}</p>
+          </div>
         </div>
       </div>
     </section>
