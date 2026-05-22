@@ -321,9 +321,9 @@ export default function AdminPage() {
             <span className={styles.loginLogoMark}>S</span>
             <span className={styles.adminTitle}>Portfolio Admin</span>
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <a href="/" className="btn btn-outline" style={{ fontSize: '14px', padding: '8px 18px' }}>← Siteye Dön</a>
-            <button onClick={handleLogout} className="btn btn-outline" style={{ fontSize: '14px', padding: '8px 18px', borderColor: 'rgba(239, 68, 68, 0.4)', color: '#ef4444' }}>Çıkış Yap</button>
+          <div className={styles.headerActions}>
+            <a href="/" className={`btn btn-outline ${styles.headerBtn}`}>← Siteye Dön</a>
+            <button onClick={handleLogout} className={`btn btn-outline ${styles.logoutBtn}`}>Çıkış Yap</button>
           </div>
         </div>
       </div>
@@ -331,7 +331,7 @@ export default function AdminPage() {
       <div className={styles.adminBody}>
         {/* ── FORM ── */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 className={styles.sectionTitle}>
             {editingId ? <><Pencil size={20} /> Projeyi Düzenle</> : <><Plus size={20} /> Yeni Proje Ekle</>}
           </h2>
 
@@ -430,7 +430,7 @@ export default function AdminPage() {
                   İptal
                 </button>
               )}
-              <button type="submit" className="btn btn-primary" disabled={saving} style={{ minWidth: 140 }}>
+              <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={saving}>
                 {saving ? 'Kaydediliyor...' : editingId ? 'Güncelle' : 'Projeyi Kaydet'}
               </button>
             </div>
@@ -439,7 +439,7 @@ export default function AdminPage() {
 
         {/* ── TELEGRAM SETTINGS ── */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 className={styles.sectionTitle}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 2L11 13" />
               <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -472,7 +472,7 @@ export default function AdminPage() {
               </div>
             </div>
             <div className={styles.formActions}>
-              <button type="submit" className="btn btn-primary" disabled={tgSaving} style={{ minWidth: 140 }}>
+              <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={tgSaving}>
                 {tgSaving ? 'Kaydediliyor...' : 'Ayarları Kaydet'}
               </button>
             </div>
@@ -481,7 +481,7 @@ export default function AdminPage() {
 
         {/* ── PROJECTS LIST ── */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 className={styles.sectionTitle}>
             <FolderOpen size={20} /> Mevcut Projeler ({projects.length})
           </h2>
 
@@ -507,7 +507,7 @@ export default function AdminPage() {
                       <span className={styles.projectDesc}>{p.description.slice(0, 80)}{p.description.length > 80 ? '...' : ''}</span>
                     )}
                     {p.link && (
-                      <a href={p.link} target="_blank" rel="noopener noreferrer" className={styles.projectLink} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <a href={p.link} target="_blank" rel="noopener noreferrer" className={styles.projectLink}>
                         <LinkIcon size={12} /> {p.link.replace(/^https?:\/\//, '').slice(0, 40)}
                       </a>
                     )}
