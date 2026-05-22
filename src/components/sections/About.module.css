@@ -170,33 +170,79 @@
 @media (max-width: 900px) {
   .inner {
     grid-template-columns: 1fr;
-    gap: 48px;
-    text-align: center;
+    gap: 40px;
+    text-align: left;
+  }
+
+  .left {
+    justify-content: center;
+    margin-bottom: 8px;
   }
 
   .right {
-    align-items: center;
+    align-items: flex-start;
+    border-left: 2px solid rgba(139, 92, 246, 0.15);
+    padding-left: 24px;
+    margin-left: 4px;
   }
 
   .sectionTag {
-    justify-content: center;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .title {
+    font-size: clamp(26px, 6vw, 36px);
+    margin-bottom: 16px;
+  }
+
+  .text {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 14px;
   }
 
   .techGrid {
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .techBadge {
+    padding: 5px 12px;
+    font-size: 12px;
+    background: rgba(139, 92, 246, 0.05);
+    border-color: rgba(139, 92, 246, 0.18);
   }
 
   .imageWrap {
-    width: 220px;
-    height: 220px;
+    width: 210px;
+    height: 210px;
   }
 
   .typewriterLine {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .floatBadge {
-    right: -10px;
-    bottom: 0;
+    right: -8px;
+    bottom: -2px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .imageGlow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.95;
   }
 }
