@@ -8,6 +8,29 @@ export default function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) {
+      nextCard();
+    } else if (isRightSwipe) {
+      prevCard();
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = subscribeProjects((data) => {
@@ -45,21 +68,21 @@ export default function Portfolio() {
 
     if (diff === 0) {
       return {
-        transform: 'translate3d(0, 0, 0) scale(1)',
+        transform: 'rotateY(0deg) translate3d(0, 0, 0) scale(1)',
         opacity: 1,
         zIndex: 3,
         cursor: 'default',
       };
     } else if (diff === 1) {
       return {
-        transform: 'var(--carousel-right-transform, translate3d(32%, 0, -100px) scale(0.85))',
+        transform: 'var(--carousel-right-transform, rotateY(-30deg) translate3d(32%, 0, -100px) scale(0.85))',
         opacity: 0.45,
         zIndex: 1,
         cursor: 'pointer',
       };
     } else if (diff === -1) {
       return {
-        transform: 'var(--carousel-left-transform, translate3d(-32%, 0, -100px) scale(0.85))',
+        transform: 'var(--carousel-left-transform, rotateY(30deg) translate3d(-32%, 0, -100px) scale(0.85))',
         opacity: 0.45,
         zIndex: 1,
         cursor: 'pointer',
@@ -113,7 +136,12 @@ export default function Portfolio() {
           </div>
         ) : (
           <>
-            <div className={styles.carouselContainer}>
+            <div
+              className={styles.carouselContainer}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               {displayedProjects.map((project, idx) => (
                 <div
                   key={project.id}
