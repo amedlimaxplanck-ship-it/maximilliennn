@@ -1,6 +1,16 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { subscribeProjects, saveProject, deleteProject, updateProject, type Project, getTelegramSettings, saveTelegramSettings } from '@/lib/portfolioStore';
+import { 
+  subscribeProjects, 
+  saveProject, 
+  deleteProject, 
+  updateProject, 
+  type Project, 
+  getTelegramSettings, 
+  saveTelegramSettings,
+  subscribeMaintenance,
+  saveMaintenance
+} from '@/lib/portfolioStore';
 import styles from './admin.module.css';
 import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 import { auth } from '@/lib/firebase';
@@ -83,6 +93,19 @@ export default function AdminPage() {
   const [tgToken, setTgToken] = useState('');
   const [tgChatId, setTgChatId] = useState('');
   const [tgSaving, setTgSaving] = useState(false);
+
+  // Maintenance state
+  const [maintenance, setMaintenance] = useState(false);
+  const [maintenanceSaving, setMaintenanceSaving] = useState(false);
+
+  // Maintenance durumunu dinle (Sadece oturum açıkken)
+  useEffect(() => {
+    if (!authed) return;
+    const unsubscribeMaint = subscribeMaintenance((status) => {
+      setMaintenance(status);
+    });
+    return () => unsubscribeMaint();
+  }, [authed]);
 
   // Oturum durumunu dinle
   useEffect(() => {
@@ -181,6 +204,19 @@ export default function AdminPage() {
       showToast('Telegram ayarları kaydedilirken hata oluştu!');
     } finally {
       setTgSaving(false);
+    }
+  };
+
+  const handleToggleMaintenance = async () => {
+    setMaintenanceSaving(true);
+    try {
+      await saveMaintenance(!maintenance);
+      showToast(!maintenance ? 'Bakım modu aktif edildi ⚠️' : 'Bakım modu kapatıldı ✓');
+    } catch (err) {
+      console.error(err);
+      showToast('Bakım modu değiştirilirken hata oluştu!');
+    } finally {
+      setMaintenanceSaving(false);
     }
   };
 
@@ -477,6 +513,36 @@ export default function AdminPage() {
               </button>
             </div>
           </form>
+        </section>
+
+        {/* ── MAINTENANCE SETTINGS ── */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Sistem Bakım Modu
+          </h2>
+          <div className={styles.form}>
+            <div className={styles.imageNote}>
+              ⚠️ Bakım modunu açtığınızda, ziyaretçiler sitenizin yerine özel bir bakım ekranı görecektir. Siz (admin) panele erişmeye devam edebilirsiniz.
+            </div>
+            <div className={styles.maintenanceRow}>
+              <div className={`${styles.statusBadge} ${maintenance ? styles.statusActive : styles.statusInactive}`}>
+                {maintenance ? 'Web Sitesi Bakımda' : 'Web Sitesi Yayında'}
+              </div>
+              <button
+                type="button"
+                onClick={handleToggleMaintenance}
+                className={`btn ${maintenance ? 'btn-primary' : 'btn-outline'} ${styles.maintenanceBtn}`}
+                disabled={maintenanceSaving}
+              >
+                {maintenanceSaving ? 'Güncelleniyor...' : maintenance ? 'Bakım Modunu Kapat' : 'Bakım Modunu Aç'}
+              </button>
+            </div>
+          </div>
         </section>
 
         {/* ── PROJECTS LIST ── */}

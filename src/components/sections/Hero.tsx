@@ -11,9 +11,8 @@ export default function Hero() {
       <div className={`container ${styles.content}`}>
         <div className={styles.heroLeft}>
           <h1 className={styles.title}>
-            Yazılım ile İş<br />
-            Süreçlerini{' '}
-            <span className="gradient-text">Dönüştürün</span>
+            Fikirlerinizi Ölçeklenebilir<br />
+            Dijital <span className="gradient-text">Ürünlere Dönüştürün</span>
           </h1>
 
           <div className={styles.subtitleRow}>

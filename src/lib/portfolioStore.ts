@@ -88,3 +88,23 @@ export async function saveTelegramSettings(token: string, chatId: string): Promi
   const docRef = doc(db, 'settings', 'telegram');
   await setDoc(docRef, { token, chatId });
 }
+
+// Bakım modu durumunu Firestore'dan dinler
+export function subscribeMaintenance(onUpdate: (enabled: boolean) => void): () => void {
+  const docRef = doc(db, 'settings', 'maintenance');
+  return onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      onUpdate(!!docSnap.data().enabled);
+    } else {
+      onUpdate(false);
+    }
+  }, (error) => {
+    console.error('Error listening to maintenance status: ', error);
+  });
+}
+
+// Bakım modu durumunu günceller
+export async function saveMaintenance(enabled: boolean): Promise<void> {
+  const docRef = doc(db, 'settings', 'maintenance');
+  await setDoc(docRef, { enabled });
+}
