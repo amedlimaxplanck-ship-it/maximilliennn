@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { subscribeProjects, saveProject, deleteProject, updateProject, type Project } from '@/lib/portfolioStore';
+import { subscribeProjects, saveProject, deleteProject, updateProject, type Project, getTelegramSettings, saveTelegramSettings } from '@/lib/portfolioStore';
 import styles from './admin.module.css';
 import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 import { auth } from '@/lib/firebase';
@@ -79,6 +79,11 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Telegram state
+  const [tgToken, setTgToken] = useState('');
+  const [tgChatId, setTgChatId] = useState('');
+  const [tgSaving, setTgSaving] = useState(false);
+
   // Oturum durumunu dinle
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
@@ -99,6 +104,23 @@ export default function AdminPage() {
       setProjects(data);
     });
     return () => unsubscribeProjects();
+  }, [authed]);
+
+  // Telegram ayarlarını yükle (Sadece oturum açıkken)
+  useEffect(() => {
+    if (!authed) return;
+    async function loadTelegramSettings() {
+      try {
+        const settings = await getTelegramSettings();
+        if (settings) {
+          setTgToken(settings.token || '');
+          setTgChatId(settings.chatId || '');
+        }
+      } catch (err) {
+        console.error('Telegram ayarları yüklenirken hata oluştu:', err);
+      }
+    }
+    loadTelegramSettings();
   }, [authed]);
 
   const showToast = (msg: string) => {
@@ -145,6 +167,20 @@ export default function AdminPage() {
     } catch (err) {
       console.error(err);
       showToast('Çıkış yapılırken hata oluştu.');
+    }
+  };
+
+  const handleTgSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTgSaving(true);
+    try {
+      await saveTelegramSettings(tgToken.trim(), tgChatId.trim());
+      showToast('Telegram ayarları kaydedildi ✓');
+    } catch (err) {
+      console.error(err);
+      showToast('Telegram ayarları kaydedilirken hata oluştu!');
+    } finally {
+      setTgSaving(false);
     }
   };
 
@@ -396,6 +432,48 @@ export default function AdminPage() {
               )}
               <button type="submit" className="btn btn-primary" disabled={saving} style={{ minWidth: 140 }}>
                 {saving ? 'Kaydediliyor...' : editingId ? 'Güncelle' : 'Projeyi Kaydet'}
+              </button>
+            </div>
+          </form>
+        </section>
+
+        {/* ── TELEGRAM SETTINGS ── */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 2L11 13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+            Telegram Bildirim Ayarları
+          </h2>
+          <form onSubmit={handleTgSave} className={styles.form}>
+            <div className={styles.imageNote}>
+              💬 Sitedeki iletişim formu doldurulduğunda bu Telegram botuna anlık bildirim gidecektir.
+            </div>
+            <div className={styles.formRow}>
+              <div className={styles.field}>
+                <label className={styles.label}>Telegram Bot Token</label>
+                <input
+                  className={styles.input}
+                  placeholder="Bot Token (örn: 123456789:ABCdef...)"
+                  value={tgToken}
+                  onChange={(e) => setTgToken(e.target.value)}
+                  type="password"
+                />
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label}>Telegram Chat ID</label>
+                <input
+                  className={styles.input}
+                  placeholder="Chat ID (örn: 987654321)"
+                  value={tgChatId}
+                  onChange={(e) => setTgChatId(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={styles.formActions}>
+              <button type="submit" className="btn btn-primary" disabled={tgSaving} style={{ minWidth: 140 }}>
+                {tgSaving ? 'Kaydediliyor...' : 'Ayarları Kaydet'}
               </button>
             </div>
           </form>

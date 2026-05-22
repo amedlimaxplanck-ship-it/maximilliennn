@@ -22,9 +22,23 @@ export default function Contact() {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) return;
     setStatus('sending');
-    // Simulated send — wire up to your backend/email service
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus('sent');
+    try {
+      const response = await fetch('/api/send-telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+      if (response.ok) {
+        setStatus('sent');
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -143,6 +157,12 @@ export default function Contact() {
                       required
                     />
                   </div>
+
+                  {status === 'error' && (
+                    <span className={styles.errorMsg}>
+                      Mesaj gönderilemedi. Lütfen ayarları kontrol edin ve tekrar deneyin.
+                    </span>
+                  )}
 
                   <button
                     type="submit"

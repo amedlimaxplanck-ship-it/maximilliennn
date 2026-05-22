@@ -7,7 +7,9 @@ import {
   updateDoc, 
   onSnapshot, 
   query, 
-  orderBy 
+  orderBy,
+  getDoc,
+  setDoc
 } from 'firebase/firestore';
 
 export interface Project {
@@ -65,4 +67,24 @@ export async function deleteProject(id: string): Promise<void> {
 export async function updateProject(id: string, data: Omit<Project, 'id' | 'createdAt'>): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
   await updateDoc(docRef, data);
+}
+
+// Telegram ayarlarını Firestore'dan çeker
+export async function getTelegramSettings(): Promise<{ token: string; chatId: string } | null> {
+  const docRef = doc(db, 'settings', 'telegram');
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    return {
+      token: data.token || '',
+      chatId: data.chatId || '',
+    };
+  }
+  return null;
+}
+
+// Telegram ayarlarını Firestore'a kaydeder
+export async function saveTelegramSettings(token: string, chatId: string): Promise<void> {
+  const docRef = doc(db, 'settings', 'telegram');
+  await setDoc(docRef, { token, chatId });
 }
