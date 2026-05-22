@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : 'http://localhost:3000'
-  ),
+  metadataBase: new URL(baseUrl),
   title: 'Maximillien Synthetix — Full Stack Developer & SaaS Specialist',
   description:
     'Yazılım geliştirme, CRM panelleri, SaaS dashboard ve kurumsal dijital çözümler. Maximillien Synthetix ile iş süreçlerinizi dönüştürün.',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/opengraph-image.png',
+        url: `${baseUrl}/opengraph-image.png`,
         width: 1200,
         height: 630,
         alt: 'Maximillien Synthetix — Full Stack Developer & SaaS Specialist',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Maximillien Synthetix — Full Stack Developer & SaaS Specialist',
     description: 'Yazılım geliştirme, CRM panelleri, SaaS dashboard ve kurumsal dijital çözümler.',
-    images: ['/twitter-image.png'],
+    images: [`${baseUrl}/twitter-image.png`],
   },
 };
 
