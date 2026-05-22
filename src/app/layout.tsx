@@ -11,6 +11,11 @@ export const metadata: Metadata = {
     description: 'Yazılım geliştirme, CRM panelleri, SaaS dashboard ve kurumsal dijital çözümler.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Maximillien Synthetix — Full Stack Developer & SaaS Specialist',
+    description: 'Yazılım geliştirme, CRM panelleri, SaaS dashboard ve kurumsal dijital çözümler.',
+  },
 };
 
 export default function RootLayout({
