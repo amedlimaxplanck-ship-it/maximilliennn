@@ -108,3 +108,18 @@ export async function saveMaintenance(enabled: boolean): Promise<void> {
   const docRef = doc(db, 'settings', 'maintenance');
   await setDoc(docRef, { enabled });
 }
+
+// Bakım modu durumunu sunucu tarafında çekmek için tek seferlik sorgu metodu (SSR)
+export async function getMaintenanceStatus(): Promise<boolean> {
+  try {
+    const docRef = doc(db, 'settings', 'maintenance');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return !!docSnap.data().enabled;
+    }
+  } catch (error) {
+    console.error('Error fetching maintenance status on server: ', error);
+  }
+  return false;
+}
+

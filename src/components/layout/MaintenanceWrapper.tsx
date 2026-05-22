@@ -4,9 +4,15 @@ import { usePathname } from 'next/navigation';
 import { subscribeMaintenance } from '@/lib/portfolioStore';
 import MaintenanceScreen from './MaintenanceScreen';
 
-export default function MaintenanceWrapper({ children }: { children: React.ReactNode }) {
+export default function MaintenanceWrapper({ 
+  children,
+  initialMaintenance
+}: { 
+  children: React.ReactNode;
+  initialMaintenance: boolean;
+}) {
   const pathname = usePathname();
-  const [maintenance, setMaintenance] = useState(false);
+  const [maintenance, setMaintenance] = useState(initialMaintenance);
 
   useEffect(() => {
     // Admin sayfaları ve API uç noktaları asla bakım moduna girmemeli
@@ -21,6 +27,7 @@ export default function MaintenanceWrapper({ children }: { children: React.React
 
     return () => unsubscribe();
   }, [pathname]);
+
 
   if (maintenance) {
     return <MaintenanceScreen />;
