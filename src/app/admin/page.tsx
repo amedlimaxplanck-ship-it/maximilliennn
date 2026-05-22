@@ -1,30 +1,64 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { getProjects, saveProject, deleteProject, updateProject, type Project } from '@/lib/portfolioStore';
+import { subscribeProjects, saveProject, deleteProject, updateProject, type Project } from '@/lib/portfolioStore';
 import styles from './admin.module.css';
 import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 
 const PASSWORD = 'synthetix2024';
 const CATEGORIES = ['CRM', 'SaaS', 'Web App', 'Diğer'];
 const MAX_IMAGES = 3;
-const MAX_FILE_MB = 4;
+const MAX_FILE_MB = 10; // Sıkıştıracağımız için başlangıç limitini yüksek tutabiliriz
 
 /* ─── IMAGE NOTE ────────────────────────────────────────────────
   📐 Önerilen Görsel Boyutu:
   • En-boy oranı: 16:9 (örneğin 1280×720 px veya 1920×1080 px)
   • Minimum: 800×450 px
-  • Maksimum dosya boyutu: 4 MB
   • Format: JPG veya PNG
   • Mobil ve masaüstünde en iyi görünüm için bu orana sadık kalın.
-  • Farklı boyutlardaki görseller otomatik kırpılır (object-fit: cover).
+  • Resimler otomatik olarak client tarafında sıkıştırılarak veritabanına kaydedilir.
 ──────────────────────────────────────────────────────────────── */
 
-function toBase64(file: File): Promise<string> {
+// HTML Canvas kullanarak görseli sıkıştırır ve yeniden boyutlandırır (maks 1000px genişlik/yükseklik, 0.75 kalite)
+function compressImage(file: File, maxWidth = 1000, maxHeight = 1000, quality = 0.75): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
     reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context not available'));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
   });
 }
 
@@ -42,10 +76,12 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const refresh = () => setProjects(getProjects());
-
   useEffect(() => {
-    if (authed) refresh();
+    if (!authed) return;
+    const unsubscribe = subscribeProjects((data) => {
+      setProjects(data);
+    });
+    return () => unsubscribe();
   }, [authed]);
 
   const showToast = (msg: string) => {
@@ -58,7 +94,7 @@ export default function AdminPage() {
     if (pw === PASSWORD) { setAuthed(true); setPwError(false); }
     else { setPwError(true); }
   };
-
+ 
   const resetForm = () => {
     setForm({ title: '', description: '', link: '', category: '', images: [] });
     setImgPreviews([]);
@@ -78,18 +114,22 @@ export default function AdminPage() {
     const toProcess = files.slice(0, remaining);
     const results: string[] = [];
 
+    showToast('Görseller optimize ediliyor...');
+    
     for (const file of toProcess) {
-      if (file.size > MAX_FILE_MB * 1024 * 1024) {
-        showToast(`"${file.name}" çok büyük — max ${MAX_FILE_MB}MB.`);
-        continue;
+      try {
+        const compressedB64 = await compressImage(file);
+        results.push(compressedB64);
+      } catch (err) {
+        console.error(err);
+        showToast(`"${file.name}" sıkıştırılamadı.`);
       }
-      const b64 = await toBase64(file);
-      results.push(b64);
     }
 
     setForm((f) => ({ ...f, images: [...f.images, ...results].slice(0, MAX_IMAGES) }));
     setImgPreviews((p) => [...p, ...results].slice(0, MAX_IMAGES));
     if (fileRef.current) fileRef.current.value = '';
+    showToast('Görseller başarıyla eklendi ✓');
   };
 
   const removeImage = (idx: number) => {
@@ -101,27 +141,34 @@ export default function AdminPage() {
     e.preventDefault();
     if (!form.title.trim()) return;
     setSaving(true);
-    await new Promise((r) => setTimeout(r, 300));
-    const data = { title: form.title.trim(), description: form.description.trim(), link: form.link.trim(), category: form.category, images: form.images };
-    if (editingId) {
-      updateProject(editingId, data);
-      showToast('Proje güncellendi ✓');
-    } else {
-      saveProject(data);
-      showToast('Proje eklendi ✓');
+    
+    try {
+      const data = { title: form.title.trim(), description: form.description.trim(), link: form.link.trim(), category: form.category, images: form.images };
+      if (editingId) {
+        await updateProject(editingId, data);
+        showToast('Proje güncellendi ✓');
+      } else {
+        await saveProject(data);
+        showToast('Proje eklendi ✓');
+      }
+      resetForm();
+    } catch (err) {
+      console.error(err);
+      showToast('Kaydedilirken hata oluştu!');
+    } finally {
+      setSaving(false);
     }
-    window.dispatchEvent(new Event('synthetix:projects-updated'));
-    refresh();
-    resetForm();
-    setSaving(false);
   };
 
-  const handleDelete = (id: string) => {
-    deleteProject(id);
-    window.dispatchEvent(new Event('synthetix:projects-updated'));
-    refresh();
-    setDeleteConfirm(null);
-    showToast('Proje silindi.');
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProject(id);
+      setDeleteConfirm(null);
+      showToast('Proje silindi.');
+    } catch (err) {
+      console.error(err);
+      showToast('Silinirken hata oluştu!');
+    }
   };
 
   /* ─── LOGIN SCREEN ── */

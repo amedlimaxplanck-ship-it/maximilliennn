@@ -1,6 +1,6 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { getProjects, type Project } from '@/lib/portfolioStore';
+import { useState, useEffect } from 'react';
+import { subscribeProjects, type Project } from '@/lib/portfolioStore';
 import styles from './Portfolio.module.css';
 import { FolderOpen, Image as ImageIcon } from 'lucide-react';
 
@@ -12,14 +12,10 @@ export default function Portfolio() {
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
 
   useEffect(() => {
-    setProjects(getProjects());
-    const onStorage = () => setProjects(getProjects());
-    window.addEventListener('storage', onStorage);
-    window.addEventListener('synthetix:projects-updated', onStorage);
-    return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener('synthetix:projects-updated', onStorage);
-    };
+    const unsubscribe = subscribeProjects((data) => {
+      setProjects(data);
+    });
+    return () => unsubscribe();
   }, []);
 
   const filtered = filter === 'Hepsi'

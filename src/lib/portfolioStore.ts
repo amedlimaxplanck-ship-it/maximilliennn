@@ -1,46 +1,68 @@
+import { db } from './firebase';
+import { 
+  collection, 
+  addDoc, 
+  deleteDoc, 
+  doc, 
+  updateDoc, 
+  onSnapshot, 
+  query, 
+  orderBy 
+} from 'firebase/firestore';
+
 export interface Project {
   id: string;
   title: string;
   description: string;
   link?: string;
   category?: string;
-  images: string[]; // base64 encoded
+  images: string[]; // base64 encoded (compressed client-side)
   createdAt: number;
 }
 
-const STORAGE_KEY = 'synthetix_projects';
+const COLLECTION_NAME = 'projects';
 
-export function getProjects(): Project[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as Project[];
-  } catch {
-    return [];
-  }
+// Firestore'daki projeleri gerçek zamanlı olarak dinler
+export function subscribeProjects(onUpdate: (projects: Project[]) => void): () => void {
+  const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
+  
+  return onSnapshot(q, (snapshot) => {
+    const projects: Project[] = [];
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      projects.push({
+        id: docSnap.id,
+        title: data.title || '',
+        description: data.description || '',
+        link: data.link || '',
+        category: data.category || '',
+        images: data.images || [],
+        createdAt: data.createdAt || Date.now(),
+      });
+    });
+    onUpdate(projects);
+  }, (error) => {
+    console.error('Error listening to projects: ', error);
+  });
 }
 
-export function saveProject(project: Omit<Project, 'id' | 'createdAt'>): Project {
-  const projects = getProjects();
-  const newProject: Project = {
+// Yeni proje ekler
+export async function saveProject(project: Omit<Project, 'id' | 'createdAt'>): Promise<string> {
+  const docRef = await addDoc(collection(db, COLLECTION_NAME), {
     ...project,
-    id: crypto.randomUUID(),
     createdAt: Date.now(),
-  };
-  projects.unshift(newProject);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-  return newProject;
+  });
+  return docRef.id;
 }
 
-export function deleteProject(id: string): void {
-  const projects = getProjects().filter((p) => p.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+// Proje siler
+export async function deleteProject(id: string): Promise<void> {
+  const docRef = doc(db, COLLECTION_NAME, id);
+  await deleteDoc(docRef);
 }
 
-export function updateProject(id: string, data: Omit<Project, 'id' | 'createdAt'>): void {
-  const projects = getProjects().map((p) =>
-    p.id === id ? { ...p, ...data } : p
-  );
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+// Proje günceller
+export async function updateProject(id: string, data: Omit<Project, 'id' | 'createdAt'>): Promise<void> {
+  const docRef = doc(db, COLLECTION_NAME, id);
+  await updateDoc(docRef, data);
 }
