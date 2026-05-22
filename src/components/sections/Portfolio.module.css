@@ -237,6 +237,32 @@
   overflow: hidden;
 }
 
+.cardDescExpanded {
+  display: block !important;
+  overflow-y: auto !important;
+  max-height: 160px;
+}
+
+.readMoreBtn {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 0;
+  margin-top: 2px;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition);
+}
+.readMoreBtn:hover {
+  color: var(--accent-2);
+  transform: translateX(2px);
+}
+
 .cardLink {
   display: inline-flex;
   align-items: center;

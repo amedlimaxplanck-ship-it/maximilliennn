@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { subscribeProjects, type Project } from '@/lib/portfolioStore';
 import styles from './Portfolio.module.css';
 import { FolderOpen, Image as ImageIcon } from 'lucide-react';
@@ -8,29 +8,9 @@ export default function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-    if (isLeftSwipe) {
-      nextCard();
-    } else if (isRightSwipe) {
-      prevCard();
-    }
-  };
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef<number | null>(null);
+  const touchEndRef = useRef<number | null>(null);
 
   useEffect(() => {
     const unsubscribe = subscribeProjects((data) => {
@@ -49,6 +29,56 @@ export default function Portfolio() {
   const prevCard = () => {
     setActiveIndex((prev) => (prev - 1 + displayedProjects.length) % displayedProjects.length);
   };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartRef.current = e.touches[0].clientX;
+      touchEndRef.current = null;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (touchStartRef.current !== null) {
+        const currentX = e.touches[0].clientX;
+        const diffX = Math.abs(touchStartRef.current - currentX);
+        touchEndRef.current = currentX;
+        // If movement is horizontal, prevent page scroll
+        if (diffX > 8) {
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      const start = touchStartRef.current;
+      const end = touchEndRef.current;
+      if (start !== null && end !== null) {
+        const distance = start - end;
+        const minSwipeDistance = 50;
+        if (distance > minSwipeDistance) {
+          nextCard();
+        } else if (distance < -minSwipeDistance) {
+          prevCard();
+        }
+      }
+      touchStartRef.current = null;
+      touchEndRef.current = null;
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [displayedProjects.length]);
 
   const getCardStyle = (index: number) => {
     const total = displayedProjects.length;
@@ -137,10 +167,8 @@ export default function Portfolio() {
         ) : (
           <>
             <div
+              ref={containerRef}
               className={styles.carouselContainer}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
             >
               {displayedProjects.map((project, idx) => (
                 <div
@@ -209,6 +237,9 @@ export default function Portfolio() {
 
 function ProjectCard({ project, onImageClick }: { project: Project; onImageClick: (idx: number) => void }) {
   const [imgIdx, setImgIdx] = useState(0);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+
+  const isLong = project.description && project.description.length > 120;
 
   return (
     <article className={styles.card}>
@@ -258,7 +289,23 @@ function ProjectCard({ project, onImageClick }: { project: Project; onImageClick
       <div className={styles.cardBody}>
         <h3 className={styles.cardTitle}>{project.title}</h3>
         {project.description && (
-          <p className={styles.cardDesc}>{project.description}</p>
+          <>
+            <p className={`${styles.cardDesc} ${isDescExpanded ? styles.cardDescExpanded : ''}`}>
+              {project.description}
+            </p>
+            {isLong && (
+              <button
+                type="button"
+                className={styles.readMoreBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDescExpanded(!isDescExpanded);
+                }}
+              >
+                {isDescExpanded ? 'Daha Az' : 'Daha Fazla...'}
+              </button>
+            )}
+          </>
         )}
         {project.link && (
           <a

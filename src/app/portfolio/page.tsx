@@ -129,6 +129,9 @@ export default function PortfolioPage() {
 
 function ProjectCard({ project, onImageClick }: { project: Project; onImageClick: (idx: number) => void }) {
   const [imgIdx, setImgIdx] = useState(0);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+
+  const isLong = project.description && project.description.length > 120;
 
   return (
     <article className={styles.card}>
@@ -178,7 +181,23 @@ function ProjectCard({ project, onImageClick }: { project: Project; onImageClick
       <div className={styles.cardBody}>
         <h3 className={styles.cardTitle}>{project.title}</h3>
         {project.description && (
-          <p className={styles.cardDesc}>{project.description}</p>
+          <>
+            <p className={`${styles.cardDesc} ${isDescExpanded ? styles.cardDescExpanded : ''}`}>
+              {project.description}
+            </p>
+            {isLong && (
+              <button
+                type="button"
+                className={styles.readMoreBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDescExpanded(!isDescExpanded);
+                }}
+              >
+                {isDescExpanded ? 'Daha Az' : 'Daha Fazla...'}
+              </button>
+            )}
+          </>
         )}
         {project.link && (
           <a
