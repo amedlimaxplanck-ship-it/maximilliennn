@@ -1,64 +1,13 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
 import styles from './Hero.module.css';
 
-const roles = [
-  'Full Stack Developer',
-  'SaaS Panel Uzmanı',
-  'CRM Geliştirici',
-  'Yazılım Mimarı',
-];
-
-function useTypingEffect(words: string[], speed = 80, pause = 1800) {
-  const [display, setDisplay] = useState('');
-  const [wordIdx, setWordIdx] = useState(0);
-  const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('typing');
-  const charIdx = useRef(0);
-
-  useEffect(() => {
-    const current = words[wordIdx];
-
-    if (phase === 'typing') {
-      if (charIdx.current < current.length) {
-        const t = setTimeout(() => {
-          setDisplay(current.slice(0, charIdx.current + 1));
-          charIdx.current++;
-        }, speed);
-        return () => clearTimeout(t);
-      } else {
-        const t = setTimeout(() => setPhase('deleting'), pause);
-        return () => clearTimeout(t);
-      }
-    }
-
-    if (phase === 'deleting') {
-      if (charIdx.current > 0) {
-        const t = setTimeout(() => {
-          charIdx.current--;
-          setDisplay(current.slice(0, charIdx.current));
-        }, speed / 2);
-        return () => clearTimeout(t);
-      } else {
-        setWordIdx((i) => (i + 1) % words.length);
-        setPhase('typing');
-      }
-    }
-  }, [phase, display, wordIdx, words, speed, pause]);
-
-  return display;
-}
-
 export default function Hero() {
-  const typed = useTypingEffect(roles);
-
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section className={styles.hero} id="hero">
-
-
       <div className={`container ${styles.content}`}>
         <div className={styles.heroLeft}>
           <h1 className={styles.title}>
@@ -67,9 +16,8 @@ export default function Hero() {
             <span className="gradient-text">Dönüştürün</span>
           </h1>
 
-          <div className={styles.typingRow}>
-            <span className={styles.typingText}>{typed}</span>
-            <span className={styles.cursor} />
+          <div className={styles.subtitleRow}>
+            <span className={styles.subtitleText}>Modern ve ölçeklenebilir yönetim panelleri & web uygulamaları.</span>
           </div>
 
           <p className={styles.desc}>
@@ -130,6 +78,7 @@ export default function Hero() {
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className={styles.mockupVideo}
                   />
                 </div>
@@ -149,6 +98,7 @@ export default function Hero() {
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className={styles.mockupVideo}
                   />
                 </div>
