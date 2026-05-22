@@ -9,7 +9,7 @@ export default function Footer() {
         <div className={styles.brand}>
           <div className={styles.logo}>
             <a
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/maximilliensynthetix"
               target="_blank"
               rel="noopener noreferrer"
               className={`brand-badge ${styles.logoLink}`}

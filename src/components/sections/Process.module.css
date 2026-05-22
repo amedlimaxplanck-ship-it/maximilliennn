@@ -157,11 +157,67 @@
   line-height: 1.7;
 }
 
-/* ── MOBILE ── */
-@media (max-width: 600px) {
-  .step {
-    grid-template-columns: 48px 1fr;
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .steps {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
     gap: 16px;
+    padding: 10px 20px 25px 20px;
+    margin: 0 -20px;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .steps::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 65%;
+    scroll-snap-align: center;
+    gap: 12px;
+  }
+
+  .stepLeft {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .connector {
+    display: none;
+  }
+
+  .stepRight {
+    padding-bottom: 0;
+    width: 100%;
+  }
+
+  .stepCard {
+    height: 100%;
+    width: 100%;
+  }
+
+  .stepCard:hover {
+    transform: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .steps {
+    gap: 12px;
+    padding: 10px 16px 20px 16px;
+    margin: 0 -16px;
+  }
+
+  .step {
+    flex: 0 0 85%;
   }
 
   .numWrap {
@@ -175,11 +231,7 @@
     padding: 20px;
   }
 
-  .stepCard:hover {
-    transform: none;
-  }
-
   .stepRight {
-    padding-bottom: 24px;
+    padding-bottom: 0;
   }
 }
