@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import { subscribeProjects, saveProject, deleteProject, updateProject, type Project } from '@/lib/portfolioStore';
 import styles from './admin.module.css';
 import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
-const PASSWORD = 'synthetix2024';
 const CATEGORIES = ['CRM', 'SaaS', 'Web App', 'Diğer'];
 const MAX_IMAGES = 3;
 const MAX_FILE_MB = 10; // Sıkıştıracağımız için başlangıç limitini yüksek tutabiliriz
@@ -63,9 +64,11 @@ function compressImage(file: File, maxWidth = 1000, maxHeight = 1000, quality = 
 }
 
 export default function AdminPage() {
+  const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
-  const [pwError, setPwError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -76,12 +79,26 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Oturum durumunu dinle
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setAuthed(true);
+      } else {
+        setAuthed(false);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribeAuth();
+  }, []);
+
+  // Projeleri dinle (Sadece oturum açıkken)
   useEffect(() => {
     if (!authed) return;
-    const unsubscribe = subscribeProjects((data) => {
+    const unsubscribeProjects = subscribeProjects((data) => {
       setProjects(data);
     });
-    return () => unsubscribe();
+    return () => unsubscribeProjects();
   }, [authed]);
 
   const showToast = (msg: string) => {
@@ -89,12 +106,48 @@ export default function AdminPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pw === PASSWORD) { setAuthed(true); setPwError(false); }
-    else { setPwError(true); }
+    setErrorMsg('');
+    setSaving(true);
+
+    let loginEmail = email.trim();
+    if (!loginEmail) {
+      setSaving(false);
+      return;
+    }
+
+    // E-posta formatında değilse arkada otomatik olarak @synthetix.local uzantısını ekliyoruz (kullanıcı adı girişi kolaylığı)
+    if (!loginEmail.includes('@')) {
+      loginEmail = `${loginEmail}@synthetix.local`;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, pw);
+      setPw('');
+      setErrorMsg('');
+    } catch (err: any) {
+      console.error(err);
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        setErrorMsg('Hatalı kullanıcı adı veya şifre.');
+      } else {
+        setErrorMsg('Giriş başarısız oldu. Lütfen tekrar deneyin.');
+      }
+    } finally {
+      setSaving(false);
+    }
   };
- 
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      showToast('Oturum kapatıldı.');
+    } catch (err) {
+      console.error(err);
+      showToast('Çıkış yapılırken hata oluştu.');
+    }
+  };
+
   const resetForm = () => {
     setForm({ title: '', description: '', link: '', category: '', images: [] });
     setImgPreviews([]);
@@ -171,6 +224,17 @@ export default function AdminPage() {
     }
   };
 
+  /* ─── LOADING SCREEN ── */
+  if (loading) {
+    return (
+      <div className={styles.loginPage}>
+        <div className={styles.loginCard} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+          <span className={styles.loginLogoText}>Yükleniyor...</span>
+        </div>
+      </div>
+    );
+  }
+
   /* ─── LOGIN SCREEN ── */
   if (!authed) {
     return (
@@ -183,16 +247,25 @@ export default function AdminPage() {
           <h1 className={styles.loginTitle}>Giriş Yap</h1>
           <form onSubmit={handleLogin} className={styles.loginForm}>
             <input
+              type="text"
+              className={`${styles.input} ${errorMsg ? styles.inputError : ''}`}
+              placeholder="Kullanıcı Adı veya E-posta"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setErrorMsg(''); }}
+              autoFocus
+              required
+            />
+            <input
               type="password"
-              className={`${styles.input} ${pwError ? styles.inputError : ''}`}
+              className={`${styles.input} ${errorMsg ? styles.inputError : ''}`}
               placeholder="Şifre"
               value={pw}
-              onChange={(e) => { setPw(e.target.value); setPwError(false); }}
-              autoFocus
+              onChange={(e) => { setPw(e.target.value); setErrorMsg(''); }}
+              required
             />
-            {pwError && <span className={styles.errorMsg}>Yanlış şifre.</span>}
-            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-              Giriş
+            {errorMsg && <span className={styles.errorMsg}>{errorMsg}</span>}
+            <button type="submit" className="btn btn-primary" disabled={saving} style={{ width: '100%', justifyContent: 'center' }}>
+              {saving ? 'Giriş Yapılıyor...' : 'Giriş'}
             </button>
           </form>
         </div>
@@ -212,7 +285,10 @@ export default function AdminPage() {
             <span className={styles.loginLogoMark}>S</span>
             <span className={styles.adminTitle}>Portfolio Admin</span>
           </div>
-          <a href="/" className="btn btn-outline" style={{ fontSize: '14px', padding: '8px 18px' }}>← Siteye Dön</a>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <a href="/" className="btn btn-outline" style={{ fontSize: '14px', padding: '8px 18px' }}>← Siteye Dön</a>
+            <button onClick={handleLogout} className="btn btn-outline" style={{ fontSize: '14px', padding: '8px 18px', borderColor: 'rgba(239, 68, 68, 0.4)', color: '#ef4444' }}>Çıkış Yap</button>
+          </div>
         </div>
       </div>
 
