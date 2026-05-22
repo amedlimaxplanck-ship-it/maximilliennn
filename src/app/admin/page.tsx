@@ -117,9 +117,9 @@ export default function AdminPage() {
       return;
     }
 
-    // E-posta formatında değilse arkada otomatik olarak @synthetix.local uzantısını ekliyoruz (kullanıcı adı girişi kolaylığı)
+    // E-posta formatında değilse arkada otomatik olarak @gmail.com uzantısını ekliyoruz (kullanıcı adı girişi kolaylığı)
     if (!loginEmail.includes('@')) {
-      loginEmail = `${loginEmail}@synthetix.local`;
+      loginEmail = `${loginEmail}@gmail.com`;
     }
 
     try {
