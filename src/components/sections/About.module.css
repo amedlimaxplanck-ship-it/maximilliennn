@@ -24,71 +24,48 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: rgba(15, 16, 38, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 2px solid rgba(139, 92, 246, 0.18);
+  background: #ffffff; /* Premium white background */
+  border: 3px solid #1a1a24;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
-  box-shadow: 
-    0 20px 45px rgba(0, 0, 0, 0.7),
-    inset 0 0 25px rgba(139, 92, 246, 0.08);
-  overflow: hidden;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
-.imagePlaceholder:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.8),
-    0 0 30px rgba(139, 92, 246, 0.15),
-    inset 0 0 25px rgba(139, 92, 246, 0.12);
+.typewriterWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
-.rotatingLogo {
-  width: 100%;
-  height: 100%;
+.typewriterLine {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  text-transform: lowercase;
+  white-space: nowrap;
 }
 
-.circleText {
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  fill: rgba(255, 255, 255, 0.65);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  transform-origin: 100px 100px;
-  animation: spinCircularText 28s linear infinite;
+.blue {
+  color: #0066cc; /* Beautiful aesthetic blue */
 }
 
-.centerIcon {
-  animation: pulseHexGlow 4s ease-in-out infinite;
-  transform-origin: 100px 100px;
+.black {
+  color: #060608; /* Deep obsidian black */
 }
 
-@keyframes spinCircularText {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulseHexGlow {
-  0%, 100% {
-    transform: scale(0.95);
-    filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.2));
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.02);
-    filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.65)) drop-shadow(0 0 30px rgba(96, 165, 250, 0.35));
-    opacity: 1;
-  }
+.imageRing {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.210);
+  animation: spin-slow 20s linear infinite;
 }
 
 .imageGlow {
