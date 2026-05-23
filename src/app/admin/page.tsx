@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   subscribeProjects, 
   saveProject, 
@@ -146,10 +146,10 @@ export default function AdminPage() {
     loadTelegramSettings();
   }, [authed]);
 
-  const showToast = (msg: string) => {
+  const showToast = useCallback((msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
-  };
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,7 +183,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       await signOut(auth);
       showToast('Oturum kapatıldı.');
@@ -191,7 +191,43 @@ export default function AdminPage() {
       console.error(err);
       showToast('Çıkış yapılırken hata oluştu.');
     }
-  };
+  }, [showToast]);
+
+  // 5 dakika (300.000 ms) inaktiflik durumunda otomatik çıkış yap
+  useEffect(() => {
+    if (!authed) return;
+
+    let timeoutId: any;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        handleLogout();
+        showToast('5 dakika boyunca işlem yapılmadığı için oturumunuz sonlandırıldı.');
+      }, 5 * 60 * 1000);
+    };
+
+    // İlk yüklemede zamanlayıcıyı başlat
+    resetTimer();
+
+    // Kullanıcı etkileşimlerini dinle
+    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+    
+    const handleActivity = () => {
+      resetTimer();
+    };
+
+    events.forEach((event) => {
+      window.addEventListener(event, handleActivity);
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
+  }, [authed, handleLogout, showToast]);
 
   const handleTgSave = async (e: React.FormEvent) => {
     e.preventDefault();
