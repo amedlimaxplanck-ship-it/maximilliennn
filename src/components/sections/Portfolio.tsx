@@ -111,7 +111,7 @@ export default function Portfolio() {
       container.removeEventListener('touchmove', handleTouchMove);
       container.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []);
+  }, [displayedProjects.length]);
 
   const getCardStyle = (index: number) => {
     const total = displayedProjects.length;
