@@ -50,17 +50,13 @@ export default function Hero() {
           </div>
 
           <h1 className={styles.title}>
-            Fikirlerinizi Ölçeklenebilir<br />
-            Dijital <span className="gradient-text">Ürünlere Dönüştürün</span>
+            Fikirlerinizi Dijital<br />
+            <span className="gradient-text">Ürünlere Dönüştürün.</span>
           </h1>
 
-          <div className={styles.subtitleRow}>
-            <span className={styles.subtitleText}>Modern ve ölçeklenebilir yönetim panelleri & web uygulamaları.</span>
-          </div>
-
           <p className={styles.desc}>
-            CRM panelleri, SaaS dashboard'ları ve kurumsal yazılım çözümleri.
-            Fikirleri ölçeklenebilir ve yüksek performanslı ürünlere dönüştürmek için profesyonel yazılım hizmetleri.
+            CRM panelleri, SaaS platformları ve kurumsal yazılımlar için yüksek 
+            performanslı, modern ve ölçeklenebilir web çözümleri geliştiriyoruz.
           </p>
 
           <div className={styles.ctas}>

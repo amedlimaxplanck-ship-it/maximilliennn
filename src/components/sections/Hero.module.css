@@ -520,8 +520,25 @@
   }
 
   .title {
+    font-size: clamp(32px, 8vw, 44px);
+    line-height: 1.15;
     letter-spacing: -1px;
+    margin-bottom: 16px;
   }
+
+  .desc {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 90%;
+  }
+
+  .badge {
+    margin-bottom: 20px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
 
   .stats {
     gap: 28px;
