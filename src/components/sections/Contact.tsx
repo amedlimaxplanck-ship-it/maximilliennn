@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import styles from './Contact.module.css';
-import { Zap, Globe, MessageCircle, CheckCircle } from 'lucide-react';
+import { Zap, Globe, MessageCircle, CheckCircle, Mail, Phone, Instagram } from 'lucide-react';
 
 const PROJECT_TYPES = [
   'CRM Panel', 'SaaS Dashboard', 'API Geliştirme',
@@ -9,8 +9,9 @@ const PROJECT_TYPES = [
 ];
 
 export default function Contact() {
+  const [contactMethod, setContactMethod] = useState<'email' | 'whatsapp' | 'instagram'>('email');
   const [form, setForm] = useState({
-    name: '', email: '', type: '', message: '',
+    name: '', contactValue: '', type: '', message: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -20,15 +21,22 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
+    if (!form.name || !form.contactValue || !form.message) return;
     setStatus('sending');
     try {
+      const payload = {
+        name: form.name,
+        contactMethod,
+        contactValue: form.contactValue,
+        type: form.type,
+        message: form.message,
+      };
       const response = await fetch('/api/send-telegram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (response.ok) {
         setStatus('sent');
@@ -93,7 +101,7 @@ export default function Contact() {
                   <p className={styles.successDesc}>
                     En kısa sürede geri dönüş sağlanacaktır. Teşekkür ederiz!
                   </p>
-                  <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name:'', email:'', type:'', message:'' }); }}>
+                  <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name: '', contactValue: '', type: '', message: '' }); setContactMethod('email'); }}>
                     Yeni Mesaj
                   </button>
                 </div>
@@ -101,7 +109,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className={styles.form} noValidate>
                   <div className={styles.row}>
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="contact-name">Adınız</label>
+                      <label className={styles.label} htmlFor="contact-name">Adınız Soyadınız *</label>
                       <input
                         id="contact-name"
                         name="name"
@@ -114,18 +122,56 @@ export default function Contact() {
                       />
                     </div>
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="contact-email">E-posta</label>
-                      <input
-                        id="contact-email"
-                        name="email"
-                        type="email"
-                        className={styles.input}
-                        placeholder="ornek@mail.com"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                      />
+                      <label className={styles.label}>İletişim Tercihi *</label>
+                      <div className={styles.methodSelector}>
+                        <button
+                          type="button"
+                          className={`${styles.methodBtn} ${contactMethod === 'email' ? styles.methodActive : ''}`}
+                          onClick={() => { setContactMethod('email'); setForm(f => ({ ...f, contactValue: '' })); }}
+                        >
+                          <Mail size={15} />
+                          <span>E-posta</span>
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.methodBtn} ${contactMethod === 'whatsapp' ? styles.methodActive : ''}`}
+                          onClick={() => { setContactMethod('whatsapp'); setForm(f => ({ ...f, contactValue: '' })); }}
+                        >
+                          <Phone size={15} />
+                          <span>WhatsApp</span>
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.methodBtn} ${contactMethod === 'instagram' ? styles.methodActive : ''}`}
+                          onClick={() => { setContactMethod('instagram'); setForm(f => ({ ...f, contactValue: '' })); }}
+                        >
+                          <Instagram size={15} />
+                          <span>Instagram</span>
+                        </button>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label} htmlFor="contact-value">
+                      {contactMethod === 'email' && 'E-posta Adresiniz *'}
+                      {contactMethod === 'whatsapp' && 'WhatsApp Telefon Numaranız *'}
+                      {contactMethod === 'instagram' && 'Instagram Kullanıcı Adınız *'}
+                    </label>
+                    <input
+                      id="contact-value"
+                      name="contactValue"
+                      type={contactMethod === 'email' ? 'email' : contactMethod === 'whatsapp' ? 'tel' : 'text'}
+                      className={styles.input}
+                      placeholder={
+                        contactMethod === 'email' ? 'ornek@mail.com' :
+                        contactMethod === 'whatsapp' ? '+90 5xx xxx xx xx' :
+                        '@kullaniciadi'
+                      }
+                      value={form.contactValue}
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
 
                   <div className={styles.field}>

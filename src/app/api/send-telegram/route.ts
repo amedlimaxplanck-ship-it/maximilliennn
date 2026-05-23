@@ -5,9 +5,9 @@ import { doc, getDoc } from 'firebase/firestore';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, type, message } = body;
+    const { name, contactMethod, contactValue, type, message } = body;
 
-    if (!name || !email || !message) {
+    if (!name || !contactMethod || !contactValue || !message) {
       return NextResponse.json({ error: 'Eksik alanlar var' }, { status: 400 });
     }
 
@@ -25,10 +25,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Telegram token veya chat ID eksik' }, { status: 400 });
     }
 
+    // İletişim yöntemi bilgisi
+    let contactInfo = '';
+    if (contactMethod === 'email') {
+      contactInfo = `📧 <b>E-posta:</b> ${contactValue}`;
+    } else if (contactMethod === 'whatsapp') {
+      contactInfo = `📞 <b>WhatsApp:</b> ${contactValue}`;
+    } else if (contactMethod === 'instagram') {
+      contactInfo = `📸 <b>Instagram:</b> ${contactValue}`;
+    } else {
+      contactInfo = `ℹ️ <b>İletişim (${contactMethod}):</b> ${contactValue}`;
+    }
+
     // Mesaj formatı (Marka başta, web sitesinden gönderildi ibaresi sonda)
     const formattedMessage = `⚡️ <b>MAXIMILLIEN SYNTHETIX</b>\nYeni İletişim Formu Gönderisi\n\n` +
       `👤 <b>Ad Soyad:</b> ${name}\n` +
-      `📧 <b>E-posta:</b> ${email}\n` +
+      `${contactInfo}\n` +
       `💼 <b>Proje Türü:</b> ${type || 'Belirtilmedi'}\n\n` +
       `📝 <b>Mesaj:</b>\n${message}\n\n` +
       `🌐 <i>web sitesi iletişim formundan gönderildi.</i>`;
