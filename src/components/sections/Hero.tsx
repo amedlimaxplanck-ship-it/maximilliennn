@@ -43,12 +43,6 @@ export default function Hero() {
 
       <div className={`container ${styles.content}`}>
         <div className={styles.heroLeft}>
-          {/* Teknoloji Rozeti */}
-          <div className={styles.badge}>
-            <span className={styles.badgeDot} />
-            <span>Ölçeklenebilir Yazılım Çözümleri</span>
-          </div>
-
           <h1 className={styles.title}>
             Fikirlerinizi Dijital<br />
             <span className="gradient-text">Ürünlere Dönüştürün.</span>
