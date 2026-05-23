@@ -10,7 +10,15 @@ export default function Portfolio() {
   const [lightbox, setLightbox] = useState<{ imgs: string[]; idx: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<number | null>(null);
-  const touchEndRef = useRef<number | null>(null);
+  
+  // Drag states and refs for continuous gesture tracking
+  const [dragProgress, setDragProgress] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  const dragProgressRef = useRef(0);
+  const nextCardRef = useRef<() => void>(() => {});
+  const prevCardRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const unsubscribe = subscribeProjects((data) => {
@@ -30,22 +38,46 @@ export default function Portfolio() {
     setActiveIndex((prev) => (prev - 1 + displayedProjects.length) % displayedProjects.length);
   };
 
+  // Keep callback refs updated to prevent stale closures in event listeners
+  useEffect(() => {
+    nextCardRef.current = nextCard;
+    prevCardRef.current = prevCard;
+  });
+
+  // Track if screen is mobile to apply mobile-optimized 3D transform metrics
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Event listeners for tracking continuous touch gesture on mobile
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleTouchStart = (e: TouchEvent) => {
       touchStartRef.current = e.touches[0].clientX;
-      touchEndRef.current = null;
+      dragProgressRef.current = 0;
+      setIsDragging(true);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (touchStartRef.current !== null) {
         const currentX = e.touches[0].clientX;
-        const diffX = Math.abs(touchStartRef.current - currentX);
-        touchEndRef.current = currentX;
-        // If movement is horizontal, prevent page scroll
-        if (diffX > 8) {
+        const diffX = currentX - touchStartRef.current;
+        const containerWidth = container.offsetWidth || 300;
+        
+        // Convert pixel drag to progress ratio (clamped between -1.1 and 1.1)
+        const progress = Math.max(-1.1, Math.min(1.1, diffX / (containerWidth * 0.5)));
+        dragProgressRef.current = progress;
+        setDragProgress(progress);
+
+        // Prevent vertical scrolling if swipe is primarily horizontal
+        if (Math.abs(diffX) > 8) {
           if (e.cancelable) {
             e.preventDefault();
           }
@@ -54,19 +86,20 @@ export default function Portfolio() {
     };
 
     const handleTouchEnd = () => {
-      const start = touchStartRef.current;
-      const end = touchEndRef.current;
-      if (start !== null && end !== null) {
-        const distance = start - end;
-        const minSwipeDistance = 50;
-        if (distance > minSwipeDistance) {
-          nextCard();
-        } else if (distance < -minSwipeDistance) {
-          prevCard();
-        }
+      setIsDragging(false);
+      const progress = dragProgressRef.current;
+      
+      dragProgressRef.current = 0;
+      setDragProgress(0);
+
+      const swipeThreshold = 0.25;
+      if (progress < -swipeThreshold) {
+        nextCardRef.current();
+      } else if (progress > swipeThreshold) {
+        prevCardRef.current();
       }
+
       touchStartRef.current = null;
-      touchEndRef.current = null;
     };
 
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -78,10 +111,11 @@ export default function Portfolio() {
       container.removeEventListener('touchmove', handleTouchMove);
       container.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [displayedProjects.length]);
+  }, []);
 
   const getCardStyle = (index: number) => {
     const total = displayedProjects.length;
+    if (total === 0) return {};
     if (total === 1) {
       return {
         transform: 'none',
@@ -96,33 +130,62 @@ export default function Portfolio() {
     if (diff < -1) diff += total;
     if (diff > 1) diff -= total;
 
-    if (diff === 0) {
-      return {
-        transform: 'rotateY(0deg) translate3d(0, 0, 0) scale(1)',
-        opacity: 1,
-        zIndex: 3,
-        cursor: 'default',
-      };
-    } else if (diff === 1) {
-      return {
-        transform: 'var(--carousel-right-transform, rotateY(-30deg) translate3d(32%, 0, -100px) scale(0.85))',
-        opacity: 0.45,
-        zIndex: 1,
-        cursor: 'pointer',
-      };
-    } else if (diff === -1) {
-      return {
-        transform: 'var(--carousel-left-transform, rotateY(30deg) translate3d(-32%, 0, -100px) scale(0.85))',
-        opacity: 0.45,
-        zIndex: 1,
-        cursor: 'pointer',
-      };
+    // Add continuous drag progress to normal diff
+    let pos = diff + dragProgress;
+    if (pos < -1.5) pos += total;
+    if (pos > 1.5) pos -= total;
+
+    const absPos = Math.abs(pos);
+
+    // Apply mobile-optimized limits
+    const maxTranslateX = isMobile ? 18 : 32; // percent
+    const maxTranslateZ = isMobile ? -120 : -150; // px
+    const maxRotateY = isMobile ? -25 : -30; // deg
+    const maxScale = isMobile ? 0.8 : 0.82; // target scale
+
+    let zIndex = 1;
+    let opacity = 0.45;
+    let scale = maxScale;
+    let translateX = 0;
+    let translateZ = maxTranslateZ;
+    let rotateY = 0;
+
+    // Center card gets higher z-index dynamically
+    if (absPos < 0.5) {
+      zIndex = 3;
+    } else {
+      zIndex = 1;
     }
 
+    // Interpolate values continuously based on pos
+    if (absPos <= 1) {
+      opacity = 1 - absPos * (1 - 0.45);
+      scale = 1 - absPos * (1 - maxScale);
+      translateX = pos * maxTranslateX;
+      translateZ = absPos * maxTranslateZ;
+      rotateY = pos * maxRotateY;
+    } else {
+      const d = absPos - 1; // 0 to 0.5
+      const progressToOut = d / 0.5; // 0 to 1
+      opacity = 0.45 * (1 - progressToOut);
+      scale = maxScale - progressToOut * (maxScale - 0.7);
+      
+      const fromX = (pos > 0 ? 1 : -1) * maxTranslateX;
+      translateX = fromX * (1 - progressToOut);
+      translateZ = maxTranslateZ - progressToOut * 50;
+      rotateY = (pos > 0 ? 1 : -1) * maxRotateY * (1 - progressToOut);
+    }
+
+    const transition = isDragging 
+      ? 'none' 
+      : 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+
     return {
-      transform: 'translate3d(0, 0, -200px) scale(0.7)',
-      opacity: 0,
-      zIndex: 0,
+      transform: `rotateY(${rotateY}deg) translate3d(${translateX}%, 0, ${translateZ}px) scale(${scale})`,
+      opacity: Math.max(0, Math.min(1, opacity)),
+      zIndex,
+      transition,
+      cursor: diff === 0 ? 'default' : 'pointer',
     };
   };
 
