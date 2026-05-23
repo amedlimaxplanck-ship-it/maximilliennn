@@ -53,8 +53,9 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Send Telegram Route error:', error);
-    return NextResponse.json({ error: error.message || 'Sunucu hatası' }, { status: 500 });
+    const errMessage = error instanceof Error ? error.message : 'Sunucu hatası';
+    return NextResponse.json({ error: errMessage }, { status: 500 });
   }
 }

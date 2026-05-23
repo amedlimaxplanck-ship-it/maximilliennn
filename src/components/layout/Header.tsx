@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './Header.module.css';
 
@@ -12,6 +13,7 @@ const navItems = [
 ];
 
 export default function Header() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,7 +26,7 @@ export default function Header() {
   const handleNav = (href: string) => {
     setMenuOpen(false);
     if (typeof window !== 'undefined' && window.location.pathname !== '/') {
-      window.location.href = `/${href}`;
+      router.push(`/${href}`);
       return;
     }
     const el = document.querySelector(href);

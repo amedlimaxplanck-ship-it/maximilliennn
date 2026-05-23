@@ -12,12 +12,12 @@ export default function MaintenanceWrapper({
   initialMaintenance: boolean;
 }) {
   const pathname = usePathname();
-  const [maintenance, setMaintenance] = useState(initialMaintenance);
+  const isAdminOrApi = pathname.startsWith('/admin') || pathname.startsWith('/api');
+  const [maintenance, setMaintenance] = useState(isAdminOrApi ? false : initialMaintenance);
 
   useEffect(() => {
     // Admin sayfaları ve API uç noktaları asla bakım moduna girmemeli
-    if (pathname.startsWith('/admin') || pathname.startsWith('/api')) {
-      setMaintenance(false);
+    if (isAdminOrApi) {
       return;
     }
 
@@ -26,7 +26,7 @@ export default function MaintenanceWrapper({
     });
 
     return () => unsubscribe();
-  }, [pathname]);
+  }, [isAdminOrApi]);
 
 
   if (maintenance) {

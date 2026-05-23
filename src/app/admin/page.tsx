@@ -13,6 +13,7 @@ import {
 } from '@/lib/portfolioStore';
 import styles from './admin.module.css';
 import { Pencil, Plus, FolderOpen, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
@@ -171,9 +172,10 @@ export default function AdminPage() {
       await signInWithEmailAndPassword(auth, loginEmail, pw);
       setPw('');
       setErrorMsg('');
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+      const firebaseError = err as { code?: string };
+      if (firebaseError.code === 'auth/invalid-credential' || firebaseError.code === 'auth/user-not-found' || firebaseError.code === 'auth/wrong-password') {
         setErrorMsg('Hatalı kullanıcı adı veya şifre.');
       } else {
         setErrorMsg('Giriş başarısız oldu. Lütfen tekrar deneyin.');
@@ -197,7 +199,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!authed) return;
 
-    let timeoutId: any;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     const resetTimer = () => {
       clearTimeout(timeoutId);
@@ -394,7 +396,7 @@ export default function AdminPage() {
             <span className={styles.adminTitle}>Portfolio Admin</span>
           </div>
           <div className={styles.headerActions}>
-            <a href="/" className={`btn btn-outline ${styles.headerBtn}`}>← Siteye Dön</a>
+            <Link href="/" className={`btn btn-outline ${styles.headerBtn}`}>← Siteye Dön</Link>
             <button onClick={handleLogout} className={`btn btn-outline ${styles.logoutBtn}`}>Çıkış Yap</button>
           </div>
         </div>

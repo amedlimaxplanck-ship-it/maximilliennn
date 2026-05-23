@@ -40,7 +40,7 @@ export default function About() {
             teknik mükemmeliyet ve kullanıcı deneyimi en üst düzeyde ön planda tutulur.
           </p>
           <p className={styles.text}>
-            CRM panellerinden SaaS dashboard'larına, MVP geliştirmeden API entegrasyonlarına
+            CRM panellerinden {"SaaS dashboard'larına"}, MVP geliştirmeden API entegrasyonlarına
             kadar geniş bir yelpazede profesyonel çözümler sunulmaktadır. Fikirleri
             gerçeğe dönüştürmek üzere uçtan uca mühendislik hizmeti sağlanır.
           </p>

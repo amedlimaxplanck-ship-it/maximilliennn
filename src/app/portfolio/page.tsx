@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
 import { subscribeProjects, type Project } from '@/lib/portfolioStore';
 import styles from '@/components/sections/Portfolio.module.css';
 import { FolderOpen, Image as ImageIcon } from 'lucide-react';
@@ -44,9 +45,9 @@ export default function PortfolioPage() {
       <main style={{ minHeight: '100dvh', paddingTop: '100px' }}>
         <section className={`section ${styles.portfolio}`} style={{ paddingBottom: '120px' }}>
           <div className="container">
-            <a href="/" className={styles.backLink}>
+            <Link href="/" className={styles.backLink}>
               ← Ana Sayfaya Dön
-            </a>
+            </Link>
 
             <div className={styles.header} style={{ textAlign: 'left', marginBottom: '40px' }}>
               <div className={styles.sectionTag}>Tüm Çalışmalarımız</div>
