@@ -106,7 +106,7 @@ export default function Contact() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className={styles.form} noValidate>
+                <form onSubmit={handleSubmit} className={styles.form}>
                   <div className={styles.row}>
                     <div className={styles.field}>
                       <label className={styles.label} htmlFor="contact-name">Adınız Soyadınız *</label>
