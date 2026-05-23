@@ -46,7 +46,7 @@ export default function Hero() {
           {/* Teknoloji Rozeti */}
           <div className={styles.badge}>
             <span className={styles.badgeDot} />
-            <span>Yapay Zeka ve Ölçeklenebilir Yazılım Çözümleri</span>
+            <span>Ölçeklenebilir Yazılım Çözümleri</span>
           </div>
 
           <h1 className={styles.title}>
