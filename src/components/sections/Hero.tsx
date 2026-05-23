@@ -1,15 +1,54 @@
 'use client';
+import { useState } from 'react';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className={styles.hero} id="hero">
+    <section 
+      className={styles.hero} 
+      id="hero"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Arka Plan Efektleri */}
+      <div className={styles.bgOrb1} />
+      <div className={styles.bgOrb2} />
+      <div className={styles.bgGrid} />
+
+      {/* İnteraktif Cursor Glow Spotlight */}
+      <div 
+        className={styles.mouseGlow} 
+        style={{ 
+          left: `${mousePos.x}px`, 
+          top: `${mousePos.y}px`,
+          opacity: isHovered ? 1 : 0
+        }} 
+      />
+
       <div className={`container ${styles.content}`}>
         <div className={styles.heroLeft}>
+          {/* Teknoloji Rozeti */}
+          <div className={styles.badge}>
+            <span className={styles.badgeDot} />
+            <span>Yapay Zeka ve Ölçeklenebilir Yazılım Çözümleri</span>
+          </div>
+
           <h1 className={styles.title}>
             Fikirlerinizi Ölçeklenebilir<br />
             Dijital <span className="gradient-text">Ürünlere Dönüştürün</span>
