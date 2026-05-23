@@ -87,53 +87,65 @@ export default function Hero() {
         </div>
 
         <div className={styles.heroRight}>
-          <div className={styles.mockupContainer}>
-            {/* Laptop Mockup */}
-            <div className={styles.laptopMockup}>
-              <div className={styles.laptopScreen}>
-                <div className={styles.laptopHeader}>
-                  <div className={styles.mockupDots}>
-                    <span className={styles.mockupDot} style={{ background: '#ff5f56' }} />
-                    <span className={styles.mockupDot} style={{ background: '#ffbd2e' }} />
-                    <span className={styles.mockupDot} style={{ background: '#27c93f' }} />
+          {/* Masaüstünde oynatılacak dynamic mockup videoları */}
+          <div className={styles.desktopMockups}>
+            <div className={styles.mockupContainer}>
+              {/* Laptop Mockup */}
+              <div className={styles.laptopMockup}>
+                <div className={styles.laptopScreen}>
+                  <div className={styles.laptopHeader}>
+                    <div className={styles.mockupDots}>
+                      <span className={styles.mockupDot} style={{ background: '#ff5f56' }} />
+                      <span className={styles.mockupDot} style={{ background: '#ffbd2e' }} />
+                      <span className={styles.mockupDot} style={{ background: '#27c93f' }} />
+                    </div>
+                    <div className={styles.mockupBar}>maximillien.io/dashboard</div>
                   </div>
-                  <div className={styles.mockupBar}>maximillien.io/dashboard</div>
+                  <div className={styles.laptopBody}>
+                    <video
+                      src="/hero-showcase.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className={styles.mockupVideo}
+                    />
+                  </div>
                 </div>
-                <div className={styles.laptopBody}>
-                  <video
-                    src="/hero-showcase.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className={styles.mockupVideo}
-                  />
-                </div>
+                <div className={styles.laptopBase} />
               </div>
-              <div className={styles.laptopBase} />
-            </div>
 
-            {/* Phone Mockup */}
-            <div className={styles.phoneMockup}>
-              <div className={styles.phoneScreen}>
-                <div className={styles.phoneSpeaker} />
-                <div className={styles.phoneDynamicIsland} />
-                <div className={styles.phoneBody}>
-                  <video
-                    src="/hero-mobile-showcase.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className={styles.mockupVideo}
-                  />
+              {/* Phone Mockup */}
+              <div className={styles.phoneMockup}>
+                <div className={styles.phoneScreen}>
+                  <div className={styles.phoneSpeaker} />
+                  <div className={styles.phoneDynamicIsland} />
+                  <div className={styles.phoneBody}>
+                    <video
+                      src="/hero-mobile-showcase.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className={styles.mockupVideo}
+                    />
+                  </div>
                 </div>
+                <div className={styles.phoneVolumeBtn} />
+                <div className={styles.phonePowerBtn} />
               </div>
-              <div className={styles.phoneVolumeBtn} />
-              <div className={styles.phonePowerBtn} />
             </div>
+          </div>
+
+          {/* Mobilde görüntülenecek 8k siber/modern çapraz laptop görseli */}
+          <div className={styles.mobileLaptopsContainer}>
+            <img
+              src="/hero-laptops.png"
+              alt="Maximillien Synthetix Laptops"
+              className={styles.mobileLaptopsImg}
+            />
           </div>
         </div>
       </div>
