@@ -11,7 +11,7 @@ const PROJECT_TYPES = [
 export default function Contact() {
   const [contactMethod, setContactMethod] = useState<'email' | 'whatsapp' | 'instagram'>('email');
   const [form, setForm] = useState({
-    name: '', contactValue: '', type: '', message: '',
+    name: '', contactValue: '', type: '', message: '', company: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -30,6 +30,7 @@ export default function Contact() {
         contactValue: form.contactValue,
         type: form.type,
         message: form.message,
+        company: form.company,
       };
       const response = await fetch('/api/send-telegram', {
         method: 'POST',
@@ -101,12 +102,26 @@ export default function Contact() {
                   <p className={styles.successDesc}>
                     En kısa sürede geri dönüş sağlanacaktır. Teşekkür ederiz!
                   </p>
-                  <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name: '', contactValue: '', type: '', message: '' }); setContactMethod('email'); }}>
+                  <button className="btn btn-outline" onClick={() => { setStatus('idle'); setForm({ name: '', contactValue: '', type: '', message: '', company: '' }); setContactMethod('email'); }}>
                     Yeni Mesaj
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className={styles.form}>
+                  {/* Honeypot (Spam protection) */}
+                  <div style={{ display: 'none' }} aria-hidden="true">
+                    <label htmlFor="contact-company">Company</label>
+                    <input
+                      id="contact-company"
+                      name="company"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={form.company}
+                      onChange={handleChange}
+                    />
+                  </div>
+
                   <div className={styles.row}>
                     <div className={styles.field}>
                       <label className={styles.label} htmlFor="contact-name">Adınız Soyadınız *</label>
