@@ -15,8 +15,8 @@ export default function About() {
           <div className={styles.imageWrap}>
             <div className={styles.imagePlaceholder}>
               <div className={styles.typewriterWrapper}>
-                <span className={`${styles.typewriterLine} ${styles.black}`}>maximillien</span>
-                <span className={`${styles.typewriterLine} ${styles.blue}`}>synthetix</span>
+                <span className={`${styles.typewriterLine} ${styles.black}`}>MAXIMILLIEN</span>
+                <span className={`${styles.typewriterLine} ${styles.blue}`}>SYNTHETIX</span>
               </div>
               <div className={styles.imageRing} />
             </div>

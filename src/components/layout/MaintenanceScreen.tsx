@@ -33,7 +33,7 @@ export default function MaintenanceScreen() {
 
         <div className={styles.footerLine}>
           <div className={styles.brandText}>
-            maximillien<span className={styles.brandDotText}>.</span>synthetix
+            maxsynthetix<span className={styles.brandDotText}>.</span>com
           </div>
         </div>
       </div>

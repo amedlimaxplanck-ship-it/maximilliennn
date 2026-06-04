@@ -100,7 +100,7 @@ export default function Hero() {
                     <span className={styles.mockupDot} style={{ background: '#ffbd2e' }} />
                     <span className={styles.mockupDot} style={{ background: '#27c93f' }} />
                   </div>
-                  <div className={styles.mockupBar}>maximillien.io/dashboard</div>
+                  <div className={styles.mockupBar}>maxsynthetix.com/dashboard</div>
                 </div>
                 <div className={styles.laptopBody}>
                   <video

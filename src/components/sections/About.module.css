@@ -43,12 +43,12 @@
 }
 
 .typewriterLine {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Cinzel', serif;
   font-size: 26px;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: 0.5px;
   line-height: 1.1;
-  text-transform: lowercase;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 

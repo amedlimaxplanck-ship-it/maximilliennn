@@ -16,8 +16,8 @@ export default function Footer() {
               aria-label="Instagram"
             >
               <div className="brand-badge-inner">
-                <span className="brand-line black">maximillien</span>
-                <span className="brand-line blue">synthetix</span>
+                <span className="brand-line black">MAXIMILLIEN</span>
+                <span className="brand-line blue">SYNTHETIX</span>
               </div>
               <span className={styles.instaIcon}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

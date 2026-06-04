@@ -38,8 +38,8 @@ export default function Header() {
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={`brand-badge ${styles.logo}`}>
           <div className="brand-badge-inner">
-            <span className="brand-line black">maximillien</span>
-            <span className="brand-line blue">synthetix</span>
+            <span className="brand-line black">MAXIMILLIEN</span>
+            <span className="brand-line blue">SYNTHETIX</span>
           </div>
         </Link>
 
